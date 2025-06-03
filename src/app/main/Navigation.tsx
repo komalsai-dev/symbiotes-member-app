@@ -40,7 +40,6 @@ export default function Navigation() {
   const router = useRouter();
   const [settingsDropdownOpen, setSettingsDropdownOpen] = useState(false);
 
-  // Prefetch all navigation routes on component mount
   useEffect(() => {
     navItems.forEach(item => {
       if (item.subItems) {
