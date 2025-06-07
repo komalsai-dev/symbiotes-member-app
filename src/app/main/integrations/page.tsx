@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState } from 'react';
+import ProductTrafficChart from './ProductTrafficChart';
 import { FaGithub, FaDiscord, FaLinkedin, FaFacebook, FaTwitter } from 'react-icons/fa';
 import { MdStackedLineChart } from 'react-icons/md';
-
-// Lazy load the chart component with a loading fallback
-const ProductTrafficChart = lazy(() => import('./ProductTrafficChart'));
 
 // Preload icons
 const icons = {
@@ -127,9 +125,7 @@ const IntegrationsPage = () => {
           </div>
         ))}
       </div>
-      <Suspense fallback={<div className="h-32 bg-[#232323] rounded-2xl animate-pulse mt-10" />}>
-        <ProductTrafficChart />
-      </Suspense>
+      <ProductTrafficChart />
     </div>
   );
 };

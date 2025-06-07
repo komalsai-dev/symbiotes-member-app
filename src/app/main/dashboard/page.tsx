@@ -15,6 +15,8 @@ import {
   Filler
 } from 'chart.js';
 import dynamic from 'next/dynamic';
+import { FiArrowUpRight, FiArrowDownRight, FiPlus, FiUsers, FiZap, FiCheckSquare, FiBarChart2, FiTrendingUp, FiActivity, FiUser, FiMessageCircle, FiLayers, FiBookOpen, FiMic, FiX, FiBell } from 'react-icons/fi';
+import { FaRocket, FaRobot } from 'react-icons/fa';
 
 ChartJS.register(
   CategoryScale,
@@ -404,104 +406,152 @@ const locationTrafficOptions = {
 
 const TrafficByWebsiteChart = dynamic(() => import('./TrafficByWebsiteChart'), { ssr: false });
 
+// Mock data for overview cards
+const overviewCards = [
+  {
+    title: 'Active Projects',
+    value: 12,
+    trend: '+2',
+    trendDir: 'up',
+    chart: [4, 6, 8, 7, 10, 12],
+    action: 'View All',
+    icon: <FaRocket className="text-xl text-[#d0ed01]" />,
+  },
+  {
+    title: 'Organizations Created',
+    value: 5,
+    trend: '+1',
+    trendDir: 'up',
+    chart: [1, 2, 2, 3, 4, 5],
+    action: 'Create',
+    icon: <FiUsers className="text-xl text-[#d0ed01]" />,
+  },
+  {
+    title: 'Tasks in Progress',
+    value: 34,
+    trend: '-3',
+    trendDir: 'down',
+    chart: [30, 32, 36, 38, 37, 34],
+    action: 'View All',
+    icon: <FiCheckSquare className="text-xl text-[#d0ed01]" />,
+  },
+];
+
+// Blueprint progress mock
+const blueprintSteps = [
+  { label: 'Idea', status: 'done' },
+  { label: 'In Review', status: 'done' },
+  { label: 'Execution', status: 'active' },
+  { label: 'Completed', status: 'pending' },
+];
+
+// Quick actions
+const quickActions = [
+  { label: 'Create Organization', icon: <FiPlus />, color: 'bg-[#232323]' },
+  { label: 'Launch Blueprint', icon: <FiBookOpen />, color: 'bg-[#232323]' },
+  { label: 'Invite Team', icon: <FiUsers />, color: 'bg-[#232323]' },
+  { label: 'Add Task', icon: <FiCheckSquare />, color: 'bg-[#232323]' },
+];
+
+// Activity feed mock
+const activityFeed = [
+  { user: 'Sara Ali', action: 'created a new project', time: '2m ago', avatar: 'SA', color: 'bg-[#d0ed01]' },
+  { user: 'Jane Cooper', action: 'moved Blueprint to Execution', time: '10m ago', avatar: 'JC', color: 'bg-[#38bdf8]' },
+  { user: 'Ronald Richards', action: 'invited a new member', time: '1h ago', avatar: 'RR', color: 'bg-[#f472b6]' },
+  { user: 'Guy Hawkins', action: 'completed a task', time: '2h ago', avatar: 'GH', color: 'bg-[#a3c701]' },
+];
+
+// Performance insights mock
+const insights = [
+  { label: 'Weekly Org Growth', value: '+12%', chart: [2, 3, 4, 6, 8, 12], icon: <FiTrendingUp className="text-lg text-[#d0ed01]" /> },
+  { label: 'Task Completion %', value: '78%', chart: [60, 65, 70, 75, 78], icon: <FiCheckSquare className="text-lg text-[#d0ed01]" /> },
+  { label: 'Engagement Pulse', value: '1.2k', chart: [800, 900, 1000, 1100, 1200], icon: <FiActivity className="text-lg text-[#d0ed01]" /> },
+  { label: 'Participation per Org', value: '6.3', chart: [4, 5, 6, 7, 6.3], icon: <FiUsers className="text-lg text-[#d0ed01]" /> },
+];
+
+// Community highlights mock
+const community = [
+  { name: 'Tech Innovators', type: 'Org', avatar: 'TI', color: 'bg-[#d0ed01]' },
+  { name: 'Jane Cooper', type: 'Contributor', avatar: 'JC', color: 'bg-[#38bdf8]' },
+];
+
 export default function Dashboard() {
-  const [showNotifications, setShowNotifications] = useState(false);
-
   return (
-    <>
-      {/* Dashboard Content */}
-      <section className="flex-1 flex flex-col gap-6 p-6">
-        {/* Stat Cards */}
-        <div className="grid grid-cols-4 gap-6">
-          <div className="bg-[#d0ed01] text-black rounded-xl p-6 font-bold text-2xl flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
-            <span className="text-sm font-medium text-black/70">New Users</span>
-            156
-            <span className="text-xs font-normal text-green-700">+150.03%</span>
-          </div>
-          <div className="bg-[#d0ed01] text-black rounded-xl p-6 font-bold text-2xl flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
-            <span className="text-sm font-medium text-black/70">Active Users</span>
-            2,318
-            <span className="text-xs font-normal text-green-700">+6.08%</span>
-          </div>
-          <div className="bg-[#d0ed01] text-black rounded-xl p-6 font-bold text-2xl flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
-            <span className="text-sm font-medium text-black/70">Total Views</span>
-            7,265
-            <span className="text-xs font-normal text-green-700">+11.01%</span>
-          </div>
-          <div className="bg-[#d0ed01] text-black rounded-xl p-6 font-bold text-2xl flex flex-col gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
-            <span className="text-sm font-medium text-black/70">Customer Sentiments</span>
-            4.8/5
-            <span className="text-xs font-normal text-green-700">+2.5%</span>
-          </div>
-        </div>
-        {/* Charts and Tables */}
-        <div className="grid grid-cols-3 gap-6">
-          <div className="bg-[#18181b] rounded-xl p-6 col-span-2 flex flex-col shadow-lg hover:shadow-xl transition-all duration-300" style={{ minHeight: 400 }}>
-            <div className="font-semibold mb-4 text-lg text-[#d0ed01]">Total Users</div>
-            <div className="flex-1" style={{ height: 320 }}>
-              <Line data={chartData} options={chartOptions} />
-            </div>
-          </div>
-          <div className="bg-[#18181b] rounded-xl p-6 flex flex-col shadow-lg hover:shadow-xl transition-all duration-300" style={{ minHeight: 400 }}>
-            <div className="font-semibold mb-4 text-lg text-[#d0ed01]">Traffic by Website</div>
-            <div className="flex-1" style={{ height: 320 }}>
-              <TrafficByWebsiteChart />
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="bg-[#18181b] rounded-xl p-6 flex flex-col shadow-lg hover:shadow-xl transition-all duration-300" style={{ minHeight: 400 }}>
-            <div className="font-semibold mb-4 text-lg text-[#d0ed01]">Traffic by Device</div>
-            <div className="flex-1" style={{ height: 320 }}>
-              <Bar data={deviceTrafficData} options={deviceTrafficOptions} />
-            </div>
-          </div>
-          <div className="bg-[#18181b] rounded-xl p-6 flex flex-col shadow-lg hover:shadow-xl transition-all duration-300" style={{ minHeight: 400 }}>
-            <div className="font-semibold mb-4 text-lg text-[#d0ed01]">Traffic by Location</div>
-            <div className="flex-1" style={{ height: 320 }}>
-              <Doughnut data={locationTrafficData} options={locationTrafficOptions} />
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="w-full min-h-screen bg-black pt-4 px-8 pb-8">
+      {/* Hero Headline */}
+      <h1 className="text-5xl md:text-6xl font-light text-white mb-10 tracking-tight">
+        MAKE <span className="italic text-[#d0ed01]">MARKETING</span> GREAT AGAIN. MAKI
+      </h1>
 
-      {/* Notification Panel */}
-      {showNotifications && (
-        <aside className="w-96 bg-[#18181b] rounded-xl p-6 flex flex-col gap-6 border border-white/10 shadow-2xl animate-fade-in z-20">
-          <div className="font-bold text-lg mb-2 text-[#d0ed01]">Notifications</div>
-          <div className="flex flex-col gap-4">
-            {notifications.map((n, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-200">
-                <span className="w-2 h-2 rounded-full" style={{ background: n.color }}></span>
-                <span className="text-white flex-1">{n.text}</span>
-                <span className="text-xs text-gray-400">{n.time}</span>
-              </div>
-            ))}
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left Column */}
+        <div className="flex flex-col gap-6">
+          {/* AI Impact Card */}
+          <div className="bg-[#d0ed01] rounded-2xl p-5 shadow-lg flex flex-col gap-3">
+            <div className="font-bold text-lg text-black">AI Impact: What Happens to Advertising Now?</div>
+            <div className="text-black text-sm">Last week news reports emerged quoting Sam Altman that AI would</div>
+            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=facearea&w=400&q=80" alt="AI Impact" className="rounded-xl w-full h-28 object-cover" />
           </div>
-          <div className="font-bold text-lg mb-2 text-[#d0ed01]">Activities</div>
-          <div className="flex flex-col gap-4">
-            {activities.map((a, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-200">
-                <span className="w-2 h-2 rounded-full" style={{ background: a.color }}></span>
-                <span className="text-white flex-1">{a.text}</span>
-                <span className="text-xs text-gray-400">{a.time}</span>
+          {/* Download App Card */}
+          <div className="bg-[#d0ed01] rounded-2xl p-5 shadow-lg flex flex-col gap-3 relative overflow-hidden">
+            <div className="font-bold text-lg text-black">Download the App now!</div>
+            <div className="text-black text-sm">Set your goals and get your own personnel training program.<br/>Sign in to avail student discounts and many more crazy updates</div>
+            <div className="flex items-center mt-2">
+              <button className="bg-black text-[#d0ed01] rounded-full p-2 text-2xl flex items-center justify-center mr-2">
+                <span className="material-icons">arrow_forward</span>
+              </button>
+              <div className="w-12 h-12 bg-[#a3c701] rounded-full flex items-center justify-center absolute bottom-3 right-3">
+                <span className="text-black font-bold text-2xl">*</span>
               </div>
-            ))}
+            </div>
           </div>
-          <div className="font-bold text-lg mb-2 text-[#d0ed01]">Contacts</div>
-          <div className="flex flex-col gap-2">
-            {contacts.map((c, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-200">
-                <span className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-lg">
-                  {c.name[0]}
-                </span>
-                <span className="text-white flex-1">{c.name}</span>
+        </div>
+
+        {/* Center Column */}
+        <div className="flex flex-col gap-6">
+          {/* Amazon Invest Card */}
+          <div className="bg-[#18181b] rounded-2xl p-5 shadow-lg text-white flex flex-col gap-2 border border-[#d0ed01]/20">
+            <div className="font-bold text-lg">Amazon to Invest $10 Billion in North Carolina to Expand AI Infrastructure <span className="ml-2">→</span></div>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="w-8 h-8 bg-[#a3c701] rounded-lg flex items-center justify-center">
+                <span className="material-icons text-black">apartment</span>
               </div>
-            ))}
+              <span className="text-xs text-[#d0ed01]">News</span>
+            </div>
           </div>
-        </aside>
-      )}
-    </>
+          {/* AI Model Boundaries Card */}
+          <div className="bg-gradient-to-br from-[#232a13] to-[#18181b] rounded-2xl p-5 shadow-lg text-white flex flex-col gap-2 border border-[#d0ed01]/10 relative overflow-hidden">
+            <div className="font-bold text-base mb-2">What's particularly fascinating about the new model is how inconsistently it applies its moral boundaries.</div>
+            <div className="absolute right-4 top-4">
+              <svg width="48" height="48"><circle cx="24" cy="24" r="20" fill="#232323" /><text x="24" y="30" textAnchor="middle" fill="#d0ed01" fontSize="32" fontWeight="bold">?</text></svg>
+            </div>
+          </div>
+          {/* AI Agents Card */}
+          <div className="bg-[#18181b] rounded-2xl p-5 shadow-lg flex flex-col items-center justify-center border border-[#d0ed01]/10">
+            <div className="text-3xl font-bold text-[#d0ed01] mb-2">AI - AGENTS</div>
+            <div className="w-16 h-16 bg-[#232323] rounded-full flex items-center justify-center">
+              <span className="material-icons text-[#d0ed01] text-4xl">android</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="flex flex-col gap-6">
+          {/* DeepSeek Card */}
+          <div className="bg-[#18181b] rounded-2xl p-5 shadow-lg flex flex-col gap-3 border border-[#d0ed01]/10">
+            <div className="font-bold text-lg text-white">DeepSeek's latest AI model a 'big step backwards' for free speech</div>
+            <div className="text-gray-300 text-sm">DeepSeek's latest AI model, R1 0528, has raised eyebrows for a further regression on free speech and what users can discuss. "A big step backwards for free speech," is how one prominent AI researcher summed it up</div>
+            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=facearea&w=400&q=80" alt="DeepSeek AI" className="rounded-xl w-full h-28 object-cover" />
+          </div>
+          {/* Neon Arrow Card */}
+          <div className="bg-[#d0ed01] rounded-2xl p-5 shadow-lg flex items-center justify-between">
+            <div className="text-black font-bold text-lg">&nbsp;</div>
+            <span className="text-4xl">→</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
