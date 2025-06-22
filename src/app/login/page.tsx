@@ -18,7 +18,7 @@ export default function Login() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8000/login', {
+      const response = await fetch('http://localhost:8000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,9 +35,12 @@ export default function Login() {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store email in localStorage
+      // Store email and access token in localStorage
       if (typeof window !== 'undefined') {
         localStorage.setItem('userEmail', email);
+        if (data.session && data.session.access_token) {
+          localStorage.setItem('accessToken', data.session.access_token);
+        }
       }
 
       // If login is successful, redirect to dashboard

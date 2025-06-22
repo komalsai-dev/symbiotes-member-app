@@ -154,23 +154,36 @@ export default function MainLayout({ children }: Readonly<{ children: React.Reac
                     </button>
                     <button
                       className="w-full py-2 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#d0ed01] hover:text-black transition text-left px-4"
-                      onClick={() => window.location.href = '/main/settings/preferences'}
+                      onClick={() => window.location.href = '/profile'}
                     >
-                      Preference
-                    </button>
-                    <button
-                      className="w-full py-2 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#d0ed01] hover:text-black transition text-left px-4"
-                      onClick={() => window.location.href = '/main/settings/security'}
-                    >
-                      Security
+                      View Profile
                     </button>
                     <button
                       className="w-full mt-2 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition"
-                      onClick={() => {
-                        if (typeof window !== 'undefined') {
+                      onClick={async () => {
+                        try {
+                          const accessToken = localStorage.getItem('accessToken');
+                          if (accessToken) {
+                            const response = await fetch('http://localhost:8000/auth/signout', {
+                              method: 'POST',
+                              headers: {
+                                'Authorization': `Bearer ${accessToken}`,
+                                'Content-Type': 'application/json',
+                              },
+                            });
+                            
+                            if (!response.ok) {
+                              console.error('Signout failed:', response.statusText);
+                            }
+                          }
+                        } catch (error) {
+                          console.error('Error during signout:', error);
+                        } finally {
+                          // Clear localStorage and navigate to login regardless of API call result
                           localStorage.removeItem('userEmail');
+                          localStorage.removeItem('accessToken');
+                          window.location.href = '/login';
                         }
-                        window.location.href = '/login';
                       }}
                     >
                       Logout
