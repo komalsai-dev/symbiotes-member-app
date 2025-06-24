@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { FiPhone, FiMessageSquare, FiMail, FiSend, FiAward, FiTrendingUp, FiUsers, FiGlobe, FiEdit2, FiX } from "react-icons/fi";
+import { FiPhone, FiMessageSquare, FiMail, FiSend, FiAward, FiTrendingUp, FiUsers, FiGlobe, FiEdit2, FiX, FiAlertCircle } from "react-icons/fi";
 
 type Profile = {
   id?: string;
@@ -24,6 +24,39 @@ export default function ProfilePage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState("");
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [showOrgWarning, setShowOrgWarning] = useState(false);
+
+  // Check for organization ID in localStorage and update profile
+  useEffect(() => {
+    const organizationId = typeof window !== 'undefined' ? localStorage.getItem('organizationId') : null;
+    if (organizationId && profile && !profile.org_id) {
+      handleAutoUpdateOrg(organizationId);
+    }
+  }, [profile]);
+
+  // Auto update organization ID if available
+  const handleAutoUpdateOrg = async (organizationId: string) => {
+    try {
+      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+      const response = await fetch('http://localhost:8000/update-profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
+        },
+        body: JSON.stringify({
+          org_id: organizationId
+        })
+      });
+      const data = await response.json();
+      if (response.ok && data.profile) {
+        setProfile(data.profile);
+        setShowOrgWarning(false);
+      }
+    } catch (err) {
+      console.error('Failed to auto-update organization ID:', err);
+    }
+  };
 
   // Fetch profile on mount
   useEffect(() => {
@@ -32,6 +65,8 @@ export default function ProfilePage() {
       setError("");
       try {
         const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+        const organizationId = typeof window !== 'undefined' ? localStorage.getItem('organizationId') : null;
+        
         const response = await fetch('http://localhost:8000/profile', {
           method: 'GET',
           headers: {
@@ -42,6 +77,8 @@ export default function ProfilePage() {
         const data = await response.json();
         if (response.ok && data.profile) {
           setProfile(data.profile);
+          // Show warning if no organization is assigned and no organizationId in localStorage
+          setShowOrgWarning(!data.profile.org_id && !organizationId);
         } else {
           setError(data.detail || data.message || 'Failed to fetch profile');
         }
@@ -56,12 +93,13 @@ export default function ProfilePage() {
 
   // Open edit modal and prefill form
   const openEdit = () => {
+    const organizationId = typeof window !== 'undefined' ? localStorage.getItem('organizationId') : null;
     setEditForm({
       full_name: profile?.full_name || '',
       phone: profile?.phone || '',
       avatar_url: profile?.avatar_url || '',
       bio: profile?.bio || '',
-      org_id: profile?.org_id || '',
+      org_id: profile?.org_id || organizationId || '', // Prefer profile org_id, fallback to localStorage
     });
     setEditError("");
     setShowEdit(true);
@@ -70,17 +108,24 @@ export default function ProfilePage() {
   // Handle update profile
   const handleUpdateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Validate organization ID
+    if (!editForm.org_id?.trim()) {
+      setEditError("Organization ID is required");
+      return;
+    }
+
     setEditLoading(true);
     setEditError("");
     try {
       const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      // Only send filled fields
       const updateBody: any = {};
       if (editForm.full_name) updateBody.full_name = editForm.full_name;
       if (editForm.phone) updateBody.phone = editForm.phone;
       if (editForm.avatar_url) updateBody.avatar_url = editForm.avatar_url;
       if (editForm.bio) updateBody.bio = editForm.bio;
       if (editForm.org_id) updateBody.org_id = editForm.org_id;
+      
       const response = await fetch('http://localhost:8000/update-profile', {
         method: 'PUT',
         headers: {
@@ -95,6 +140,12 @@ export default function ProfilePage() {
       }
       setShowEdit(false);
       setProfile(data.profile);
+      setShowOrgWarning(!data.profile.org_id);
+      
+      // Update localStorage if org_id was updated
+      if (editForm.org_id && (!profile?.org_id || profile.org_id !== editForm.org_id)) {
+        localStorage.setItem('organizationId', editForm.org_id);
+      }
     } catch (err) {
       setEditError(err instanceof Error ? err.message : 'Failed to update profile');
     } finally {
@@ -131,6 +182,24 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col md:flex-row items-start gap-12 pt-8 pb-10 px-4 md:px-16 w-full">
+      {/* Organization Warning Banner */}
+      {showOrgWarning && (
+        <div className="fixed top-0 left-0 right-0 bg-yellow-500/90 text-black p-4 z-50">
+          <div className="container mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="text-xl" />
+              <span className="font-semibold">Organization ID Required:</span>
+              <span>Please update your profile to assign an organization ID. This is required for creating blueprints.</span>
+            </div>
+            <button
+              onClick={openEdit}
+              className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+            >
+              Update Profile
+            </button>
+          </div>
+        </div>
+      )}
       {/* Left: Main Dashboard */}
       <div className="flex-1 flex flex-col gap-10">
         {/* Top: Search and Actions */}
@@ -307,10 +376,20 @@ export default function ProfilePage() {
                   <textarea className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" value={editForm.bio || ''} onChange={e => setEditForm(f => ({ ...f, bio: e.target.value }))} />
                 </div>
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Organization ID</label>
-                  <input type="text" className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" value={editForm.org_id || ''} onChange={e => setEditForm(f => ({ ...f, org_id: e.target.value }))} />
+                  <label className="block text-gray-200 font-semibold mb-1">
+                    Organization ID <span className="text-red-500">*</span>
+                    <span className="text-sm text-gray-400 ml-2">(Required for creating blueprints)</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
+                    value={editForm.org_id || ''} 
+                    onChange={e => setEditForm(f => ({ ...f, org_id: e.target.value }))}
+                    required
+                    placeholder="Enter your organization ID"
+                  />
                 </div>
-                {editError && <div className="text-red-500 text-sm text-center">{editError}</div>}
+                {editError && <div className="text-red-500 text-sm text-center bg-red-500/10 p-3 rounded">{editError}</div>}
                 <div className="flex justify-end gap-2 mt-6">
                   <button type="button" onClick={() => setShowEdit(false)} className="px-4 py-2 rounded border border-gray-500 text-gray-200 bg-transparent hover:bg-gray-800 transition">Cancel</button>
                   <button type="submit" className="px-4 py-2 rounded bg-[#d0ed01] text-black font-semibold hover:bg-[#b6d100] transition" disabled={editLoading}>{editLoading ? 'Saving...' : 'Save'}</button>

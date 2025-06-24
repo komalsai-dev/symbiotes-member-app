@@ -6,7 +6,7 @@ export default function DashboardPage() {
     <div className="flex flex-col h-screen bg-black text-white px-8 pt-4 pb-4">
       {/* Title Section */}
       <div className="text-5xl font-light italic mb-6 mt-2 text-white tracking-widest font-sans">
-        MAKE MARKETING GREAT AGAIN. MAKI
+      THE FUTURE OF BUSINESS, TODAY
       </div>
 
       <div className="grid grid-cols-3 gap-8 mt-0">

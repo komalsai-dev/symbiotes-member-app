@@ -198,6 +198,9 @@ export default function OrganizationPage() {
       if (!response.ok) {
         throw new Error(data.detail || data.message || 'Failed to create organization');
       }
+      if (data.organization && data.organization.id) {
+        localStorage.setItem('organizationId', data.organization.id);
+      }
       setShowCreate(false);
       setOrgForm({ name: '', slug: '', type: '', logo: null, description: '' });
       setOrgError('');

@@ -37,7 +37,7 @@ interface Blueprint {
   title: string;
   description: string;
   category: string;
-  status: "Draft" | "In Progress" | "Completed";
+  status: "Draft" | "In Progress" | "Completed" | "Active" | "Soft Launch";
   startDate: string;
   endDate: string;
   metrics: {
@@ -271,7 +271,7 @@ export default function BlueprintPage() {
     ops_stack: {
       host: '',
       email: '',
-    database: '',
+      database: '',
       payments: '',
       analytics: ''
     },
@@ -281,6 +281,7 @@ export default function BlueprintPage() {
   });
   const [createLoading, setCreateLoading] = useState(false);
   const [createError, setCreateError] = useState('');
+  const [createSuccess, setCreateSuccess] = useState(false);
   const [myBlueprints, setMyBlueprints] = useState<Blueprint[]>([]);
   const [myBlueprintsLoading, setMyBlueprintsLoading] = useState(false);
   const [myBlueprintsError, setMyBlueprintsError] = useState('');
@@ -318,24 +319,32 @@ export default function BlueprintPage() {
       } catch (e) {
         data = null;
       }
-      if (response.ok && Array.isArray(data) && data.length > 0) {
-        setMyBlueprints(data.map((bp: any) => ({
+      // Debug log
+      console.log('API /blueprint response:', data);
+      // Use data.blueprints if present, otherwise []
+      const blueprintsArray = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.blueprints)
+          ? data.blueprints
+          : [];
+      if (response.ok && blueprintsArray.length > 0) {
+        setMyBlueprints(blueprintsArray.map((bp: any) => ({
           id: bp.id,
           title: bp.name,
           description: bp.description,
           category: 'My Blueprints',
-          status: bp.status === 'draft' ? 'Draft' : (bp.status === 'completed' ? 'Completed' : 'In Progress'),
+          status: bp.status === 'draft' ? 'Draft' : (bp.status === 'completed' ? 'Completed' : (bp.status === 'active' ? 'Active' : 'In Progress')),
           startDate: bp.start_date || '',
           endDate: bp.end_date || '',
           metrics: { surveyCompletionRate: 0, participantCount: 0 },
           progress: 0,
           icon: <FiBook className="text-2xl text-[#d0ed01]" />,
-          tags: [],
-          lastModifiedBy: '',
-          version: '1.0',
+          tags: bp.tags || [],
+          lastModifiedBy: bp.last_modified_by || '',
+          version: bp.version || '1.0',
         })));
         setMyBlueprintsError('');
-      } else if (response.ok && Array.isArray(data) && data.length === 0) {
+      } else if (response.ok && blueprintsArray.length === 0) {
         setMyBlueprints([]);
         setMyBlueprintsError('');
       } else {
@@ -408,8 +417,10 @@ export default function BlueprintPage() {
     e.preventDefault();
     setCreateLoading(true);
     setCreateError('');
+    setCreateSuccess(false);
     try {
       const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+      const organizationId = typeof window !== 'undefined' ? localStorage.getItem('organizationId') : null;
       const response = await fetch('http://localhost:8000/blueprint', {
         method: 'POST',
         headers: {
@@ -430,18 +441,54 @@ export default function BlueprintPage() {
           ops_stack: createForm.ops_stack,
           owner_name: createForm.owner_name,
           owner_email: createForm.owner_email,
-          status: createForm.status
+          status: createForm.status,
+          ...(organizationId ? { organization_id: organizationId } : {})
         })
       });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.detail || data.message || 'Failed to create blueprint');
       }
-      // Refresh the list from backend
+      
+      // Show success message and reset form
+      setCreateSuccess(true);
+      setCreateForm({
+        name: '',
+        description: '',
+        vision: '',
+        mission: '',
+        value_ladder_snapshot: {
+          entry: { name: '', price: 0, description: '' },
+          mid: { name: '', price: 0, description: '' },
+          premium: { name: '', price: 0, description: '' }
+        },
+        core_offer: '',
+        platform_focus: [],
+        launch_phase: 'pre-launch',
+        primary_funnel_goal: '',
+        top_ad_channel: '',
+        ops_stack: {
+          host: '',
+          email: '',
+          database: '',
+          payments: '',
+          analytics: ''
+        },
+        owner_name: '',
+        owner_email: '',
+        status: 'draft'
+      });
+
+      // Switch to My Blueprints tab and refresh the list
+      setSelectedCategory(MY_BLUEPRINTS);
       await fetchMyBlueprints();
-      setShowCreateModal(false);
-      setCreateForm({ name: '', description: '', vision: '', mission: '', value_ladder_snapshot: { entry: { name: '', price: 0, description: '' }, mid: { name: '', price: 0, description: '' }, premium: { name: '', price: 0, description: '' } }, core_offer: '', platform_focus: [], launch_phase: 'pre-launch', primary_funnel_goal: '', top_ad_channel: '', ops_stack: { host: '', email: '', database: '', payments: '', analytics: '' }, owner_name: '', owner_email: '', status: 'draft' });
-      setCreateError('');
+      
+      // Close the modal after a short delay to show success message
+      setTimeout(() => {
+        setShowCreateModal(false);
+        setCreateSuccess(false);
+      }, 1500);
+
     } catch (err) {
       setCreateError(err instanceof Error ? err.message : 'Failed to create blueprint');
     } finally {
@@ -618,7 +665,7 @@ export default function BlueprintPage() {
                     <div className="px-4 pb-4">
                         <h4 className="text-gray-400 text-sm font-semibold mb-2">Status</h4>
                         <div className="flex flex-wrap gap-2">
-                            {["Draft", "In Progress", "Completed"].map((status) => (
+                            {["Draft", "In Progress", "Completed", "Active", "Soft Launch"].map((status) => (
                                 <button
                                     key={status}
                                     className={`px-3 py-1 rounded-full text-sm transition ${selectedStatus === status
@@ -697,7 +744,16 @@ export default function BlueprintPage() {
           myBlueprintsLoading ? (
             <div className="text-white text-center py-8 col-span-3">Loading blueprints...</div>
           ) : myBlueprints.length === 0 ? (
-            <div className="text-gray-400 text-center py-8 col-span-3">No Blueprints Created</div>
+            <div className="text-gray-400 text-center py-8 col-span-3">
+              <p>No Blueprints Created</p>
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="mt-4 px-6 py-2 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#b6d000] transition flex items-center gap-2 mx-auto"
+              >
+                <FiPlus className="text-lg" />
+                Create Your First Blueprint
+              </button>
+            </div>
           ) : myBlueprintsError ? (
             <div className="text-red-500 text-center py-8 col-span-3">{myBlueprintsError}</div>
           ) : myBlueprints.map((blueprint) => (
@@ -755,6 +811,8 @@ export default function BlueprintPage() {
                     ? "bg-green-500/20 text-green-500"
                     : blueprint.status === "In Progress"
                     ? "bg-yellow-500/20 text-yellow-500"
+                    : blueprint.status === "Active"
+                    ? "bg-blue-500/20 text-blue-500"
                     : "bg-gray-500/20 text-gray-500"
                 }`}>
                   {blueprint.status}
@@ -850,6 +908,8 @@ export default function BlueprintPage() {
                   ? "bg-green-500/20 text-green-500"
                   : blueprint.status === "In Progress"
                   ? "bg-yellow-500/20 text-yellow-500"
+                  : blueprint.status === "Active"
+                  ? "bg-blue-500/20 text-blue-500"
                   : "bg-gray-500/20 text-gray-500"
               }`}>
                 {blueprint.status}
@@ -1214,14 +1274,14 @@ export default function BlueprintPage() {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-[#18181b] rounded-2xl w-full max-w-2xl max-h-[90vh] border border-white/10 shadow-2xl relative flex flex-col">
             <div className="p-6 border-b border-white/10">
-            <button onClick={() => setShowCreateModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"><FiX /></button>
+              <button onClick={() => setShowCreateModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"><FiX /></button>
               <h2 className="text-2xl font-bold text-white">Create Blueprint</h2>
             </div>
             <form className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar" onSubmit={handleCreateBlueprint}>
               {/* Basic Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Basic Information</h3>
-              <div>
+                <div>
                   <label className="block text-gray-200 font-semibold mb-1">Name *</label>
                   <input 
                     type="text" 
@@ -1231,8 +1291,8 @@ export default function BlueprintPage() {
                     onChange={e => setCreateForm(f => ({ ...f, name: e.target.value }))} 
                     required 
                   />
-              </div>
-              <div>
+                </div>
+                <div>
                   <label className="block text-gray-200 font-semibold mb-1">Description *</label>
                   <textarea 
                     placeholder="Describe your blueprint"
@@ -1242,7 +1302,7 @@ export default function BlueprintPage() {
                     required 
                   />
                 </div>
-              <div>
+                <div>
                   <label className="block text-gray-200 font-semibold mb-1">Vision</label>
                   <textarea 
                     placeholder="What is your vision?"
@@ -1250,8 +1310,8 @@ export default function BlueprintPage() {
                     value={createForm.vision} 
                     onChange={e => setCreateForm(f => ({ ...f, vision: e.target.value }))} 
                   />
-              </div>
-              <div>
+                </div>
+                <div>
                   <label className="block text-gray-200 font-semibold mb-1">Mission</label>
                   <textarea 
                     placeholder="What is your mission?"
@@ -1260,7 +1320,7 @@ export default function BlueprintPage() {
                     onChange={e => setCreateForm(f => ({ ...f, mission: e.target.value }))} 
                   />
                 </div>
-              <div>
+                <div>
                   <label className="block text-gray-200 font-semibold mb-1">Core Offer</label>
                   <input 
                     type="text" 
@@ -1478,9 +1538,9 @@ export default function BlueprintPage() {
                       value={createForm.ops_stack.email} 
                       onChange={e => setCreateForm(f => ({ ...f, ops_stack: { ...f.ops_stack, email: e.target.value } }))} 
                     />
-                </div>
-              <div>
-                <label className="block text-gray-200 font-semibold mb-1">Database</label>
+                  </div>
+                  <div>
+                    <label className="block text-gray-200 font-semibold mb-1">Database</label>
                     <input 
                       type="text" 
                       placeholder="e.g., Supabase"
@@ -1544,29 +1604,42 @@ export default function BlueprintPage() {
                     value={createForm.status} 
                     onChange={e => setCreateForm(f => ({ ...f, status: e.target.value }))}
                   >
-                  <option value="draft">Draft</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                </select>
-                        </div>
+                    <option value="draft">Draft</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="active">Active</option>
+                    <option value="soft-launch">Soft Launch</option>
+                  </select>
+                </div>
               </div>
 
-              {createError && <div className="text-red-500 text-sm text-center bg-red-500/10 p-3 rounded">{createError}</div>}
+              {createError && (
+                <div className="text-red-500 text-sm text-center bg-red-500/10 p-3 rounded">
+                  {createError}
+                </div>
+              )}
+              
+              {createSuccess && (
+                <div className="text-green-500 text-sm text-center bg-green-500/10 p-3 rounded">
+                  Blueprint created successfully! Redirecting to My Blueprints...
+                </div>
+              )}
               
               <div className="flex justify-end gap-2 pt-4 border-t border-white/10">
                 <button 
                   type="button" 
                   onClick={() => setShowCreateModal(false)} 
                   className="px-4 py-2 rounded border border-gray-500 text-gray-200 bg-transparent hover:bg-gray-800 transition"
+                  disabled={createLoading || createSuccess}
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
                   className="px-4 py-2 rounded bg-[#d0ed01] text-black font-semibold hover:bg-[#b6d100] transition" 
-                  disabled={createLoading}
+                  disabled={createLoading || createSuccess}
                 >
-                  {createLoading ? 'Creating...' : 'Create Blueprint'}
+                  {createLoading ? 'Creating...' : createSuccess ? 'Created!' : 'Create Blueprint'}
                 </button>
               </div>
             </form>
