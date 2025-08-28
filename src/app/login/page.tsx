@@ -26,7 +26,7 @@ export default function Login() {
 
       // Redirect to dashboard immediately
       router.replace('/main/dashboard');
-    } catch (err) {
+    } catch {
       setError('An error occurred during login');
       setLoading(false);
     }

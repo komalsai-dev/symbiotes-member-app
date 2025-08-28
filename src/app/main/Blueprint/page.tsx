@@ -4,31 +4,20 @@ import {
   FiBook,
   FiPlus,
   FiMoreHorizontal,
-  FiClock,
-  FiCheckCircle,
-  FiAlertCircle,
   FiEdit,
   FiCalendar,
   FiSearch,
   FiTarget,
   FiZap,
   FiBarChart2,
-  FiFileText,
   FiUsers,
   FiTrendingUp,
-  FiSettings,
-  FiUpload,
   FiX,
-  FiExternalLink,
-  FiDownload,
   FiEye,
   FiFilter,
   FiPlay,
   FiTrash2,
-  FiPause,
   FiRefreshCw,
-  FiCopy,
-  FiPaperclip,
   FiUser
 } from "react-icons/fi";
 
@@ -76,6 +65,19 @@ interface MockBlueprintData {
   products_services_description: string;
   product_categories: string;
   upcoming_products: string;
+}
+
+interface BlueprintDetails {
+  id: string;
+  name: string;
+  description: string;
+  status: string;
+  slug: string;
+  spec: {
+    brand_name: string;
+    current_business_stage: string;
+    business_model: string;
+  };
 }
 
 // Mock data for blueprints
@@ -287,7 +289,7 @@ export default function BlueprintPage() {
   const [myBlueprintsLoading, setMyBlueprintsLoading] = useState(false);
   const [myBlueprintsError, setMyBlueprintsError] = useState('');
   
-  const [blueprintDetails, setBlueprintDetails] = useState<any>(null);
+  const [blueprintDetails, setBlueprintDetails] = useState<BlueprintDetails | null>(null);
   const [blueprintDetailsLoading, setBlueprintDetailsLoading] = useState(false);
   const [blueprintDetailsError, setBlueprintDetailsError] = useState('');
   

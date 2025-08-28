@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FiCpu, FiHome } from "react-icons/fi";
+
 
 export default function DashboardPage() {
   return (
@@ -85,7 +85,7 @@ export default function DashboardPage() {
             <div className="col-span-1">
               <div className="bg-[rgba(208,237,1,0.18)] backdrop-blur-md border border-white/10 rounded-xl p-5 relative overflow-hidden flex items-center gap-4 h-full">
                 <div className="flex-1 z-10">
-                  <h2 className="text-sm text-white">What's particularly fascinating about the new model is how inconsistently it applies its moral boundaries.</h2>
+                  <h2 className="text-sm text-white">What&apos;s particularly fascinating about the new model is how inconsistently it applies its moral boundaries.</h2>
                 </div>
                 <div className="w-28 h-28 relative rounded-lg overflow-hidden flex items-center justify-center z-10">
                   <Image 
@@ -139,8 +139,8 @@ export default function DashboardPage() {
               />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-white mb-2">DeepSeek's latest AI model a 'big step backwards' for free speech</h2>
-              <p className="text-gray-400 text-sm mb-4">DeepSeek's latest AI model, R1 0528, has raised eyebrows for a further regression on free speech and what users can discuss. "A big step backwards for free speech," is how one prominent AI researcher summed it up</p>
+              <h2 className="text-xl font-bold text-white mb-2">DeepSeek&apos;s latest AI model a &apos;big step backwards&apos; for free speech</h2>
+              <p className="text-gray-400 text-sm mb-4">DeepSeek&apos;s latest AI model, R1 0528, has raised eyebrows for a further regression on free speech and what users can discuss. &quot;A big step backwards for free speech,&quot; is how one prominent AI researcher summed it up</p>
             </div>
           </div>
         </div>

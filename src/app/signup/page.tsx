@@ -24,7 +24,7 @@ export default function SignUp() {
 
       // Show success message
       setSignupSuccess(true);
-    } catch (err) {
+    } catch {
       setError('An error occurred during signup');
     } finally {
       setLoading(false);
@@ -110,7 +110,7 @@ export default function SignUp() {
           <div className="text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Check Your Email</h2>
             <p className="text-gray-300 mb-6">
-              We've sent a confirmation email to <span className="text-[#d0ed01]">{formData.email}</span>. 
+              We&apos;ve sent a confirmation email to <span className="text-[#d0ed01]">{formData.email}</span>. 
               Please check your inbox and click the verification link to complete your registration.
             </p>
             <Link 
