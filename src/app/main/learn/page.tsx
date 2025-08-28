@@ -145,7 +145,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onClick }) => {
       </div>
       <div className="flex justify-between items-center">
         <span className="text-sm text-[#d0ed01]">
-          {'category' in resource ? resource.category : 'type' in resource ? resource.type : ''}
+          {('category' in resource ? resource.category : 'type' in resource ? resource.type : '') as string}
         </span>
         <button className="px-4 py-2 rounded-lg bg-[#232323] text-white hover:bg-[#d0ed01] hover:text-black transition flex items-center gap-2">
           <FiDownload className="text-lg" />
