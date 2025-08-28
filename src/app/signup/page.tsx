@@ -19,27 +19,13 @@ export default function SignUp() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8000/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Signup failed');
-      }
+      // Simulate loading
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Show success message
       setSignupSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during signup');
+      setError('An error occurred during signup');
     } finally {
       setLoading(false);
     }

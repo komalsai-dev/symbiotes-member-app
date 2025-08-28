@@ -43,7 +43,6 @@ export default function MainLayout({ children }: Readonly<{ children: React.Reac
   const [showSettings, setShowSettings] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -82,20 +81,24 @@ export default function MainLayout({ children }: Readonly<{ children: React.Reac
     };
   }, [showNotifications, showProfile, showSettings]);
 
-  useEffect(() => {
-    // Listen for route changes to show/hide loader
-    const handleStart = () => setLoading(true);
-    const handleComplete = () => setLoading(false);
-    // Next.js router events (for app dir, use window events as fallback)
-    window.addEventListener('routeChangeStart', handleStart);
-    window.addEventListener('routeChangeComplete', handleComplete);
-    window.addEventListener('routeChangeError', handleComplete);
-    return () => {
-      window.removeEventListener('routeChangeStart', handleStart);
-      window.removeEventListener('routeChangeComplete', handleComplete);
-      window.removeEventListener('routeChangeError', handleComplete);
-    };
-  }, []);
+  const handleLogout = () => {
+    // Clear localStorage
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('organizationId');
+    // Navigate to login using Next.js router
+    router.push('/login');
+  };
+
+  const handleNavigateToOrganization = () => {
+    setShowProfile(false);
+    router.push('/main/organization');
+  };
+
+  const handleNavigateToProfile = () => {
+    setShowProfile(false);
+    router.push('/profile');
+  };
 
   return (
     <ProfileDropdownContext.Provider value={{ showProfile, setShowProfile }}>
@@ -105,12 +108,6 @@ export default function MainLayout({ children }: Readonly<{ children: React.Reac
 
         {/* Main Content */}
         <main className="flex-1 flex flex-col min-h-screen relative">
-          {/* Top Loader */}
-          {loading && (
-            <div className="fixed left-64 top-0 w-[calc(100%-16rem)] h-1 z-50">
-              <div className="h-full w-full bg-[#d0ed01] animate-pulse transition-all duration-200" />
-            </div>
-          )}
           {/* Top Bar */}
           <header className="flex items-center justify-between px-8 py-4 border-b border-white/10 bg-black sticky top-0 z-10">
             <div className="flex items-center gap-4">
@@ -148,43 +145,19 @@ export default function MainLayout({ children }: Readonly<{ children: React.Reac
                     <div className="text-white text-sm break-all">{userEmail || 'No email found'}</div>
                     <button
                       className="w-full mt-2 py-2 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#d0ed01] hover:text-black transition text-left px-4"
-                      onClick={() => window.location.href = '/main/organization'}
+                      onClick={handleNavigateToOrganization}
                     >
                       Organization
                     </button>
                     <button
                       className="w-full py-2 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#d0ed01] hover:text-black transition text-left px-4"
-                      onClick={() => window.location.href = '/profile'}
+                      onClick={handleNavigateToProfile}
                     >
                       View Profile
                     </button>
                     <button
                       className="w-full mt-2 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition"
-                      onClick={async () => {
-                        try {
-                          const accessToken = localStorage.getItem('accessToken');
-                          if (accessToken) {
-                            const response = await fetch('http://localhost:8000/auth/signout', {
-                              method: 'POST',
-                              headers: {
-                                'Authorization': `Bearer ${accessToken}`,
-                                'Content-Type': 'application/json',
-                              },
-                            });
-                            
-                            if (!response.ok) {
-                              console.error('Signout failed:', response.statusText);
-                            }
-                          }
-                        } catch (error) {
-                          console.error('Error during signout:', error);
-                        } finally {
-                          // Clear localStorage and navigate to login regardless of API call result
-                          localStorage.removeItem('userEmail');
-                          localStorage.removeItem('accessToken');
-                          window.location.href = '/login';
-                        }
-                      }}
+                      onClick={handleLogout}
                     >
                       Logout
                     </button>

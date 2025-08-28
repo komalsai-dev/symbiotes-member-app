@@ -27,7 +27,7 @@ const navItems = [
 
 export default function Navigation() {
   const pathname = usePathname();
-  const isProfileActive = pathname && pathname.startsWith('/main/profile');
+  const isProfileActive = pathname && pathname.startsWith('/profile');
 
   return (
     <aside className="w-64 flex flex-col justify-between bg-[#18181b] border-r border-white/10 h-screen p-6">
@@ -46,7 +46,6 @@ export default function Navigation() {
                 <li key={item.label} className="relative">
                   <Link
                     href={item.href}
-                    prefetch={true}
                     className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all duration-150 font-semibold ${bgClass} ${textClass}`}
                   >
                     <div className="flex items-center gap-3">
@@ -66,8 +65,7 @@ export default function Navigation() {
         </nav>
       </div>
       <Link 
-        href="/main/profile"
-        prefetch={true}
+        href="/profile"
         className={`flex items-center gap-3 cursor-pointer rounded-lg px-4 py-2 transition-all duration-150 font-semibold ${isProfileActive ? 'bg-[#d0ed01] text-black' : 'hover:bg-[#232323] text-white'}`}
       >
         <FaRegCircleUser className={`text-3xl ${isProfileActive ? 'text-black' : 'text-white'}`} />

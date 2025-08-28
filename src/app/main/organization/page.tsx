@@ -6,6 +6,7 @@ import { useProfileDropdown } from "../layout";
 type Organization = {
   id: string;
   name: string;
+  slug?: string;
   type?: string;
   logo?: string;
   description?: string;
@@ -18,7 +19,56 @@ type Organization = {
 const defaultLogo = "/images/logo1.png";
 
 export default function OrganizationPage() {
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  // Mock data for organizations
+  const [organizations, setOrganizations] = useState<Organization[]>([
+    {
+      id: "1",
+      name: "Symbiotes AI",
+      type: "Startup",
+      logo: defaultLogo,
+      description: "Building the future of AI-powered business solutions",
+      members: [
+        { name: "Sara Ali", role: "Owner", email: "sara@symbiotes.ai" },
+        { name: "Jane Cooper", role: "Admin", email: "jane@symbiotes.ai" },
+        { name: "Ronald Richards", role: "Collaborator", email: "ronald@symbiotes.ai" },
+        { name: "Robert Fox", role: "Collaborator", email: "robert@symbiotes.ai" },
+      ],
+      projects: [
+        { name: "Project Alpha", status: "Active", created: "2024-01-15" },
+        { name: "Project Beta", status: "Archived", created: "2024-02-20" },
+        { name: "Project Gamma", status: "Active", created: "2024-03-10" },
+        { name: "Project Delta", status: "Active", created: "2024-03-25" },
+      ],
+      activity: [
+        { date: "2024-03-25", action: "Project Delta created" },
+        { date: "2024-03-20", action: "New member invited" },
+        { date: "2024-03-15", action: "Project Beta archived" },
+        { date: "2024-03-10", action: "Project Gamma created" },
+      ],
+      integrations: ["Slack", "GitHub", "Notion", "Figma"]
+    },
+    {
+      id: "2",
+      name: "TechCorp Solutions",
+      type: "Enterprise",
+      logo: defaultLogo,
+      description: "Enterprise software solutions for modern businesses",
+      members: [
+        { name: "John Doe", role: "Owner", email: "john@techcorp.com" },
+        { name: "Alice Smith", role: "Admin", email: "alice@techcorp.com" },
+      ],
+      projects: [
+        { name: "Enterprise Platform", status: "Active", created: "2024-01-01" },
+        { name: "Mobile App", status: "Active", created: "2024-02-15" },
+      ],
+      activity: [
+        { date: "2024-03-25", action: "Mobile App updated" },
+        { date: "2024-03-20", action: "New integration added" },
+      ],
+      integrations: ["Jira", "Confluence", "Slack"]
+    }
+  ]);
+  
   const [orgsLoading, setOrgsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("organizations");
   const [showCreate, setShowCreate] = useState(false);
@@ -55,60 +105,35 @@ export default function OrganizationPage() {
   const [deleteOrgLoading, setDeleteOrgLoading] = useState(false);
   const [deleteOrgError, setDeleteOrgError] = useState('');
 
-  // Fetch organizations from backend
+  // Mock function to fetch organizations (frontend only)
   const fetchOrganizations = async () => {
     setOrgsLoading(true);
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch('http://localhost:8000/organizations', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-      });
-      const data = await response.json();
-      if (response.ok && data.organizations) {
-        setOrganizations(data.organizations);
-      } else {
-        setOrganizations([]);
-      }
-    } catch (err) {
-      setOrganizations([]);
-    } finally {
+    // Simulate API delay
+    setTimeout(() => {
       setOrgsLoading(false);
-    }
+    }, 500);
   };
 
   useEffect(() => {
     fetchOrganizations();
   }, []);
 
-  // Fetch details for a specific organization
+  // Mock function to fetch organization details (frontend only)
   const fetchOrganizationDetails = async (orgId: string) => {
     setSelectedOrgLoading(true);
     setSelectedOrgError('');
     setSelectedOrgDetails(null);
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch(`http://localhost:8000/organizations/${orgId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-      });
-      const data = await response.json();
-      if (response.ok && data.organization) {
-        setSelectedOrgDetails(data.organization);
+    
+    // Simulate API delay
+    setTimeout(() => {
+      const org = organizations.find(o => o.id === orgId);
+      if (org) {
+        setSelectedOrgDetails(org);
       } else {
-        setSelectedOrgError(data.detail || data.message || 'Failed to fetch organization details');
+        setSelectedOrgError('Organization not found');
       }
-    } catch (err) {
-      setSelectedOrgError('Failed to fetch organization details');
-    } finally {
       setSelectedOrgLoading(false);
-    }
+    }, 500);
   };
 
   // When opening manage modal, set edit form values
@@ -123,38 +148,35 @@ export default function OrganizationPage() {
     }
   }, [modal.type, selectedOrgDetails]);
 
-  // Handle update organization
+  // Mock function to update organization (frontend only)
   const handleUpdateOrg = async () => {
     setEditOrgLoading(true);
     setEditOrgError('');
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch(`http://localhost:8000/organizations/${selectedOrgDetails.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-        body: JSON.stringify({
+    
+    // Simulate API delay
+    setTimeout(() => {
+      // Update the organization in the list
+      setOrganizations((prev: Organization[]) => prev.map(org => 
+        org.id === selectedOrgDetails.id ? {
+          ...org,
           name: editOrgForm.name,
           slug: editOrgForm.slug
-        })
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.detail || data.message || 'Failed to update organization');
-      }
-      // Refresh details and org list
-      await fetchOrganizationDetails(selectedOrgDetails.id);
-      await fetchOrganizations();
+        } : org
+      ));
+      
+      // Update selected org details
+      setSelectedOrgDetails((prev: any) => ({
+        ...prev,
+        name: editOrgForm.name,
+        slug: editOrgForm.slug
+      }));
+      
       setEditMode(false);
-    } catch (err) {
-      setEditOrgError(err instanceof Error ? err.message : 'Failed to update organization');
-    } finally {
       setEditOrgLoading(false);
-    }
+    }, 1000);
   };
 
+  // Mock function to create organization (frontend only)
   async function handleCreateOrg(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setOrgError('');
@@ -163,78 +185,53 @@ export default function OrganizationPage() {
       return;
     }
     setOrgLoading(true);
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const formData = new FormData();
-      formData.append('name', orgForm.name);
-      if (orgForm.slug) formData.append('slug', orgForm.slug);
-      if (orgForm.type) formData.append('type', orgForm.type);
-      if (orgForm.logo) formData.append('logo', orgForm.logo);
-      if (orgForm.description) formData.append('description', orgForm.description);
-
-      // If you want to send as JSON (without logo upload), use this instead:
-      const body = {
+    
+    // Simulate API delay
+    setTimeout(() => {
+      // Create new organization with mock data
+      const newOrg: Organization = {
+        id: Date.now().toString(),
         name: orgForm.name,
-        slug: orgForm.slug,
+        slug: orgForm.slug || orgForm.name.toLowerCase().replace(/\s+/g, '-'),
         type: orgForm.type,
-        description: orgForm.description
+        logo: defaultLogo,
+        description: orgForm.description,
+        members: [
+          { name: "You", role: "Owner", email: "you@example.com" }
+        ],
+        projects: [],
+        activity: [
+          { date: new Date().toISOString().split('T')[0], action: "Organization created" }
+        ],
+        integrations: []
       };
-
-      const response = await fetch('http://localhost:8000/organizations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-        body: JSON.stringify({
-          name: orgForm.name,
-          slug: orgForm.slug,
-          // type and description are optional, backend should ignore if not present
-          ...(orgForm.type ? { type: orgForm.type } : {}),
-          ...(orgForm.description ? { description: orgForm.description } : {})
-        })
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.detail || data.message || 'Failed to create organization');
-      }
-      if (data.organization && data.organization.id) {
-        localStorage.setItem('organizationId', data.organization.id);
-      }
+      
+      // Add to organizations list
+      setOrganizations((prev: Organization[]) => [...prev, newOrg]);
+      
+      // Store organization ID in localStorage
+      localStorage.setItem('organizationId', newOrg.id);
+      
       setShowCreate(false);
       setOrgForm({ name: '', slug: '', type: '', logo: null, description: '' });
       setOrgError('');
-      fetchOrganizations(); // Refresh list after creation
-    } catch (err) {
-      setOrgError(err instanceof Error ? err.message : 'Failed to create organization');
-    } finally {
       setOrgLoading(false);
-    }
+    }, 1000);
   }
 
+  // Mock function to delete organization (frontend only)
   const handleDeleteOrg = async (orgId: string) => {
     if (!window.confirm('Are you sure you want to delete this organization? This action cannot be undone.')) return;
     setDeleteOrgLoading(true);
     setDeleteOrgError('');
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch(`http://localhost:8000/organizations/${orgId}`, {
-        method: 'DELETE',
-        headers: {
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-      });
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.detail || data.message || 'Failed to delete organization');
-      }
+    
+    // Simulate API delay
+    setTimeout(() => {
+      // Remove from organizations list
+      setOrganizations((prev: Organization[]) => prev.filter(org => org.id !== orgId));
       setModal({ type: null });
-      await fetchOrganizations();
-    } catch (err) {
-      setDeleteOrgError(err instanceof Error ? err.message : 'Failed to delete organization');
-    } finally {
       setDeleteOrgLoading(false);
-    }
+    }, 1000);
   };
 
   return (

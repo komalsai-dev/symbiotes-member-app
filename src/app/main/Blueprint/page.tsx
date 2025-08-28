@@ -60,32 +60,22 @@ interface BlueprintCategory {
   [key: string]: Blueprint[];
 }
 
-interface UpdateBlueprintData {
-  blueprint_id: string;
-  name: string;
-  description: string;
-  vision: string;
-  mission: string;
-  value_ladder_snapshot: {
-    entry: { name: string; price: number; description: string };
-    mid: { name: string; price: number; description: string };
-    premium: { name: string; price: number; description: string };
-  };
-  core_offer: string;
-  platform_focus: string[];
-  launch_phase: string;
-  primary_funnel_goal: string;
-  top_ad_channel: string;
-  ops_stack: {
-    host: string;
-    email: string;
-    database: string;
-    payments: string;
-    analytics: string;
-  };
-  owner_name: string;
-  owner_email: string;
-  status: string;
+// Mock data interfaces for frontend functionality
+interface MockBlueprintData {
+  brand_name: string;
+  current_business_stage: string;
+  business_model: string;
+  freebies_downloads: string;
+  tagline: string;
+  mission_statement: string;
+  brand_vision: string;
+  problem_solved: string;
+  brand_backstory: string;
+  brand_emotions: string;
+  company_culture: string;
+  products_services_description: string;
+  product_categories: string;
+  upcoming_products: string;
 }
 
 // Mock data for blueprints
@@ -253,43 +243,56 @@ export default function BlueprintPage() {
   const [filterSearchQuery, setFilterSearchQuery] = useState('');
   const filterContainerRef = useRef<HTMLDivElement>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [createForm, setCreateForm] = useState({
-    name: '',
-    description: '',
-    vision: '',
-    mission: '',
-    value_ladder_snapshot: {
-      entry: { name: '', price: 0, description: '' },
-      mid: { name: '', price: 0, description: '' },
-      premium: { name: '', price: 0, description: '' }
-    },
-    core_offer: '',
-    platform_focus: [] as string[],
-    launch_phase: 'pre-launch',
-    primary_funnel_goal: '',
-    top_ad_channel: '',
-    ops_stack: {
-      host: '',
-      email: '',
-      database: '',
-      payments: '',
-      analytics: ''
-    },
-    owner_name: '',
-    owner_email: '',
-    status: 'draft'
+  const [createForm, setCreateForm] = useState<MockBlueprintData>({
+    brand_name: '',
+    current_business_stage: '',
+    business_model: '',
+    freebies_downloads: '',
+    tagline: '',
+    mission_statement: '',
+    brand_vision: '',
+    problem_solved: '',
+    brand_backstory: '',
+    brand_emotions: '',
+    company_culture: '',
+    products_services_description: '',
+    product_categories: '',
+    upcoming_products: ''
   });
   const [createLoading, setCreateLoading] = useState(false);
   const [createError, setCreateError] = useState('');
   const [createSuccess, setCreateSuccess] = useState(false);
-  const [myBlueprints, setMyBlueprints] = useState<Blueprint[]>([]);
+  
+  // Mock data for user's blueprints
+  const [myBlueprints, setMyBlueprints] = useState<Blueprint[]>([
+    {
+      id: 101,
+      title: "My First Blueprint",
+      description: "A test blueprint for my business",
+      category: "My Blueprints",
+      status: "Draft",
+      startDate: "2024-03-15",
+      endDate: "2024-04-15",
+      metrics: {
+        surveyCompletionRate: 0,
+        participantCount: 0
+      },
+      progress: 0,
+      icon: <FiBook className="text-2xl text-[#d0ed01]" />,
+      tags: ["Personal", "Test"],
+      lastModifiedBy: "You",
+      version: "1.0"
+    }
+  ]);
   const [myBlueprintsLoading, setMyBlueprintsLoading] = useState(false);
   const [myBlueprintsError, setMyBlueprintsError] = useState('');
+  
   const [blueprintDetails, setBlueprintDetails] = useState<any>(null);
   const [blueprintDetailsLoading, setBlueprintDetailsLoading] = useState(false);
   const [blueprintDetailsError, setBlueprintDetailsError] = useState('');
+  
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [updateForm, setUpdateForm] = useState<Partial<UpdateBlueprintData>>({});
+  const [updateForm, setUpdateForm] = useState<Partial<MockBlueprintData>>({});
   const [updateLoading, setUpdateLoading] = useState(false);
   const [updateError, setUpdateError] = useState('');
 
@@ -300,92 +303,62 @@ export default function BlueprintPage() {
     )
   ));
 
-  // Fetch my blueprints from backend
+  // Mock function to fetch blueprints (frontend only)
   const fetchMyBlueprints = async () => {
     setMyBlueprintsLoading(true);
     setMyBlueprintsError('');
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch('http://localhost:8000/blueprint', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-      });
-      let data;
-      try {
-        data = await response.json();
-      } catch (e) {
-        data = null;
-      }
-      // Debug log
-      console.log('API /blueprint response:', data);
-      // Use data.blueprints if present, otherwise []
-      const blueprintsArray = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.blueprints)
-          ? data.blueprints
-          : [];
-      if (response.ok && blueprintsArray.length > 0) {
-        setMyBlueprints(blueprintsArray.map((bp: any) => ({
-          id: bp.id,
-          title: bp.name,
-          description: bp.description,
-          category: 'My Blueprints',
-          status: bp.status === 'draft' ? 'Draft' : (bp.status === 'completed' ? 'Completed' : (bp.status === 'active' ? 'Active' : 'In Progress')),
-          startDate: bp.start_date || '',
-          endDate: bp.end_date || '',
-          metrics: { surveyCompletionRate: 0, participantCount: 0 },
+    
+    // Simulate API delay
+    setTimeout(() => {
+      setMyBlueprints([
+        {
+          id: 101,
+          title: "My First Blueprint",
+          description: "A test blueprint for my business",
+          category: "My Blueprints",
+          status: "Draft",
+          startDate: "2024-03-15",
+          endDate: "2024-04-15",
+          metrics: {
+            surveyCompletionRate: 0,
+            participantCount: 0
+          },
           progress: 0,
           icon: <FiBook className="text-2xl text-[#d0ed01]" />,
-          tags: bp.tags || [],
-          lastModifiedBy: bp.last_modified_by || '',
-          version: bp.version || '1.0',
-        })));
-        setMyBlueprintsError('');
-      } else if (response.ok && blueprintsArray.length === 0) {
-        setMyBlueprints([]);
-        setMyBlueprintsError('');
-      } else {
-        setMyBlueprints([]);
-        setMyBlueprintsError('No Blueprints Created');
-      }
-    } catch (err) {
-      setMyBlueprints([]);
-      setMyBlueprintsError('No Blueprints Created');
-    } finally {
+          tags: ["Personal", "Test"],
+          lastModifiedBy: "You",
+          version: "1.0"
+        }
+      ]);
       setMyBlueprintsLoading(false);
-    }
+    }, 500);
   };
 
-  // Fetch specific blueprint details
+  // Mock function to fetch blueprint details (frontend only)
   const fetchBlueprintDetails = async (id: string) => {
     setBlueprintDetailsLoading(true);
     setBlueprintDetailsError('');
     setBlueprintDetails(null);
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch(`http://localhost:8000/blueprint/get`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-        body: JSON.stringify({ blueprint_id: id })
+    
+    // Simulate API delay
+    setTimeout(() => {
+      setBlueprintDetails({
+        id: id,
+        name: "My First Blueprint",
+        description: "A test blueprint for my business",
+        status: "draft",
+        slug: "my-first-blueprint",
+        spec: {
+          brand_name: "Test Brand",
+          current_business_stage: "idea_stage",
+          business_model: "product_based"
+        }
       });
-      const data = await response.json();
-      if (response.ok && data) {
-        setBlueprintDetails(data);
-      } else {
-        setBlueprintDetailsError(data.detail || data.message || 'Failed to fetch blueprint details');
-      }
-    } catch (err) {
-      setBlueprintDetailsError('Failed to fetch blueprint details');
-    } finally {
       setBlueprintDetailsLoading(false);
-    }
+    }, 500);
   };
+
+  // No authentication check needed for frontend-only version
 
   // Fetch my blueprints when tab is selected
   useEffect(() => {
@@ -412,172 +385,120 @@ export default function BlueprintPage() {
     };
   }, [filterContainerRef]);
 
-  // Handle create blueprint
+  // Mock function to create blueprint (frontend only)
   const handleCreateBlueprint = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCreateLoading(true);
     setCreateError('');
     setCreateSuccess(false);
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const organizationId = typeof window !== 'undefined' ? localStorage.getItem('organizationId') : null;
-      const response = await fetch('http://localhost:8000/blueprint', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
+    
+    // Simulate API delay
+    setTimeout(() => {
+      // Create new blueprint with mock data
+      const newBlueprint: Blueprint = {
+        id: Date.now(), // Use timestamp as ID
+        title: createForm.brand_name || "New Blueprint",
+        description: createForm.mission_statement || "A new blueprint",
+        category: "My Blueprints",
+        status: "Draft",
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
+        metrics: {
+          surveyCompletionRate: 0,
+          participantCount: 0
         },
-        body: JSON.stringify({
-          name: createForm.name,
-          description: createForm.description,
-          vision: createForm.vision,
-          mission: createForm.mission,
-          value_ladder_snapshot: createForm.value_ladder_snapshot,
-          core_offer: createForm.core_offer,
-          platform_focus: createForm.platform_focus,
-          launch_phase: createForm.launch_phase,
-          primary_funnel_goal: createForm.primary_funnel_goal,
-          top_ad_channel: createForm.top_ad_channel,
-          ops_stack: createForm.ops_stack,
-          owner_name: createForm.owner_name,
-          owner_email: createForm.owner_email,
-          status: createForm.status,
-          ...(organizationId ? { organization_id: organizationId } : {})
-        })
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.detail || data.message || 'Failed to create blueprint');
-      }
+        progress: 0,
+        icon: <FiBook className="text-2xl text-[#d0ed01]" />,
+        tags: ["New", "Draft"],
+        lastModifiedBy: "You",
+        version: "1.0"
+      };
+      
+      // Add to my blueprints
+      setMyBlueprints(prev => [...prev, newBlueprint]);
       
       // Show success message and reset form
       setCreateSuccess(true);
       setCreateForm({
-        name: '',
-        description: '',
-        vision: '',
-        mission: '',
-        value_ladder_snapshot: {
-          entry: { name: '', price: 0, description: '' },
-          mid: { name: '', price: 0, description: '' },
-          premium: { name: '', price: 0, description: '' }
-        },
-        core_offer: '',
-        platform_focus: [],
-        launch_phase: 'pre-launch',
-        primary_funnel_goal: '',
-        top_ad_channel: '',
-        ops_stack: {
-          host: '',
-          email: '',
-          database: '',
-          payments: '',
-          analytics: ''
-        },
-        owner_name: '',
-        owner_email: '',
-        status: 'draft'
+        brand_name: '',
+        current_business_stage: '',
+        business_model: '',
+        freebies_downloads: '',
+        tagline: '',
+        mission_statement: '',
+        brand_vision: '',
+        problem_solved: '',
+        brand_backstory: '',
+        brand_emotions: '',
+        company_culture: '',
+        products_services_description: '',
+        product_categories: '',
+        upcoming_products: ''
       });
 
-      // Switch to My Blueprints tab and refresh the list
+      // Switch to My Blueprints tab
       setSelectedCategory(MY_BLUEPRINTS);
-      await fetchMyBlueprints();
       
       // Close the modal after a short delay to show success message
       setTimeout(() => {
         setShowCreateModal(false);
         setCreateSuccess(false);
       }, 1500);
-
-    } catch (err) {
-      setCreateError(err instanceof Error ? err.message : 'Failed to create blueprint');
-    } finally {
+      
       setCreateLoading(false);
-    }
+    }, 1000);
   };
 
   const handleEditClick = async (blueprint: Blueprint) => {
     setUpdateError('');
-    try {
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-        if(!accessToken) return;
-        
-        const response = await fetch(`http://localhost:8000/blueprint/get`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-            body: JSON.stringify({ blueprint_id: blueprint.id.toString() })
-        });
-
-        const data = await response.json();
-        if(response.ok) {
-            setUpdateForm({
-                ...data,
-                blueprint_id: data.id,
-            });
-            setShowUpdateModal(true);
-        } else {
-            setUpdateError(data.detail || 'Failed to fetch blueprint details for editing.');
-        }
-    } catch (error) {
-        setUpdateError('Failed to fetch blueprint details for editing.');
-    }
+    
+    // Mock data for editing
+    setUpdateForm({
+      brand_name: blueprint.title,
+      current_business_stage: 'idea_stage',
+      business_model: 'product_based',
+      freebies_downloads: '',
+      tagline: '',
+      mission_statement: blueprint.description,
+      brand_vision: '',
+      problem_solved: '',
+      brand_backstory: '',
+      brand_emotions: '',
+      company_culture: '',
+      products_services_description: '',
+      product_categories: '',
+      upcoming_products: ''
+    });
+    setShowUpdateModal(true);
   };
 
   const handleUpdateBlueprint = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setUpdateLoading(true);
     setUpdateError('');
-    try {
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-        const response = await fetch('http://localhost:8000/blueprint', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-            },
-            body: JSON.stringify(updateForm)
-        });
-        
-        if(!response.ok) {
-            const data = await response.json();
-            throw new Error(data.detail || 'Failed to update blueprint');
-        }
-
-        setShowUpdateModal(false);
-        fetchMyBlueprints();
-
-    } catch (err) {
-        setUpdateError(err instanceof Error ? err.message : 'An unknown error occurred');
-    } finally {
-        setUpdateLoading(false);
-    }
+    
+    // Simulate API delay
+    setTimeout(() => {
+      // Update the blueprint in the list
+      setMyBlueprints(prev => prev.map(bp => 
+        bp.id === 101 ? { // Update the first blueprint as an example
+          ...bp,
+          title: updateForm.brand_name || bp.title,
+          description: updateForm.mission_statement || bp.description,
+          lastModifiedBy: "You",
+          version: (parseFloat(bp.version) + 0.1).toFixed(1)
+        } : bp
+      ));
+      
+      setShowUpdateModal(false);
+      setUpdateLoading(false);
+    }, 1000);
   }
 
   const handleDeleteBlueprint = async (blueprintId: number) => {
     if (window.confirm('Are you sure you want to delete this blueprint?')) {
-        try {
-            const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-            const response = await fetch('http://localhost:8000/blueprint', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-                },
-                body: JSON.stringify({ blueprint_id: blueprintId.toString() })
-            });
-
-            if (!response.ok) {
-                const data = await response.json().catch(() => ({}));
-                throw new Error(data.detail || 'Failed to delete blueprint');
-            }
-
-            fetchMyBlueprints();
-        } catch (err) {
-            alert(err instanceof Error ? err.message : 'Failed to delete');
-        }
+      // Remove from the list
+      setMyBlueprints(prev => prev.filter(bp => bp.id !== blueprintId));
     }
   }
 
@@ -755,7 +676,26 @@ export default function BlueprintPage() {
               </button>
             </div>
           ) : myBlueprintsError ? (
-            <div className="text-red-500 text-center py-8 col-span-3">{myBlueprintsError}</div>
+            <div className="text-center py-8 col-span-3">
+              <div className="text-red-500 mb-4">{myBlueprintsError}</div>
+              {myBlueprintsError.includes('Authentication') && (
+                <button
+                  onClick={() => window.location.href = '/login'}
+                  className="px-6 py-2 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#b6d000] transition"
+                >
+                  Go to Login
+                </button>
+              )}
+              {!myBlueprintsError.includes('Authentication') && (
+                <button
+                  onClick={() => fetchMyBlueprints()}
+                  className="px-6 py-2 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#333] transition flex items-center gap-2 mx-auto"
+                >
+                  <FiRefreshCw className="text-lg" />
+                  Retry
+                </button>
+              )}
+            </div>
           ) : myBlueprints.map((blueprint) => (
             <div
               key={blueprint.id}
@@ -1016,235 +956,182 @@ export default function BlueprintPage() {
               <h2 className="text-2xl font-bold text-white">Update Blueprint</h2>
             </div>
             <form className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar" onSubmit={handleUpdateBlueprint}>
-              {/* Basic Information */}
+              {/* Form fields in exact API parameter sequence */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Basic Information</h3>
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Name *</label>
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Name *</label>
                   <input 
                     type="text" 
-                    placeholder="Enter blueprint name"
+                    placeholder="Enter your brand name"
                     className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={updateForm.name} 
-                    onChange={e => setUpdateForm(f => ({ ...f, name: e.target.value }))} 
+                    value={updateForm.brand_name} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, brand_name: e.target.value }))} 
                     required 
                   />
                 </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Description *</label>
-                  <textarea 
-                    placeholder="Describe your blueprint"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-20" 
-                    value={updateForm.description} 
-                    onChange={e => setUpdateForm(f => ({ ...f, description: e.target.value }))} 
-                    required 
+                  <label className="block text-gray-200 font-semibold mb-1">Current Business Stage *</label>
+                  <div className="relative">
+                    <select 
+                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01] appearance-none cursor-pointer pr-10" 
+                      value={updateForm.current_business_stage} 
+                      onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, current_business_stage: e.target.value }))} 
+                      required 
+                    >
+                      <option value="" className="bg-black text-gray-400">Select business stage</option>
+                      <option value="idea_stage" className="bg-black text-white">Idea Stage (No product/service yet)</option>
+                      <option value="pre_launch" className="bg-black text-white">Pre-Launch (Product/service ready but not launched)</option>
+                      <option value="launched" className="bg-black text-white">Launched (Actively selling but growing)</option>
+                      <option value="scaling" className="bg-black text-white">Scaling (Expanding into new markets, hiring, etc.)</option>
+                      <option value="other" className="bg-black text-white">Other</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Business Model *</label>
+                  <div className="relative">
+                    <select 
+                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01] appearance-none cursor-pointer pr-10" 
+                      value={updateForm.business_model} 
+                      onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, business_model: e.target.value }))} 
+                      required
+                    >
+                      <option value="" className="bg-black text-gray-400">Select business model</option>
+                      <option value="product_based" className="bg-black text-white">Product-Based</option>
+                      <option value="service_based" className="bg-black text-white">Service-Based</option>
+                      <option value="subscription_based" className="bg-black text-white">Subscription-Based</option>
+                      <option value="saas_digital_product" className="bg-black text-white">SaaS / Digital Product</option>
+                      <option value="other" className="bg-black text-white">Other</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Freebies/Downloads</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g., Free templates, guides, tools"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
+                    value={updateForm.freebies_downloads} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, freebies_downloads: e.target.value }))} 
                   />
                 </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Vision</label>
-                  <textarea 
-                    placeholder="What is your vision?"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
-                    value={updateForm.vision} 
-                    onChange={e => setUpdateForm(f => ({ ...f, vision: e.target.value }))} 
+                  <label className="block text-gray-200 font-semibold mb-1">Tagline</label>
+                  <input 
+                    type="text" 
+                    placeholder="Your brand tagline or slogan"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
+                    value={updateForm.tagline} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, tagline: e.target.value }))} 
                   />
                 </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Mission</label>
+                  <label className="block text-gray-200 font-semibold mb-1">Mission Statement</label>
                   <textarea 
                     placeholder="What is your mission?"
                     className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
-                    value={updateForm.mission} 
-                    onChange={e => setUpdateForm(f => ({ ...f, mission: e.target.value }))} 
+                    value={updateForm.mission_statement} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, mission_statement: e.target.value }))} 
                   />
                 </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Core Offer</label>
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Vision</label>
+                  <textarea 
+                    placeholder="What is your vision for the future?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={updateForm.brand_vision} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, brand_vision: e.target.value }))} 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Problem Solved</label>
+                  <textarea 
+                    placeholder="What problem does your business solve?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={updateForm.problem_solved} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, problem_solved: e.target.value }))} 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Backstory</label>
+                  <textarea 
+                    placeholder="Tell the story behind your brand"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={updateForm.brand_backstory} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, brand_backstory: e.target.value }))} 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Emotions</label>
+                  <textarea 
+                    placeholder="What emotions do you want your brand to evoke?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={updateForm.brand_emotions} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, brand_emotions: e.target.value }))} 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Company Culture</label>
+                  <textarea 
+                    placeholder="Describe your company culture and values"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={updateForm.company_culture} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, company_culture: e.target.value }))} 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Products/Services Description</label>
+                  <textarea 
+                    placeholder="Describe your products or services"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={updateForm.products_services_description} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, products_services_description: e.target.value }))} 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Product Categories</label>
                   <input 
                     type="text" 
-                    placeholder="What is your core offer?"
+                    placeholder="e.g., Software, Consulting, E-commerce"
                     className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={updateForm.core_offer} 
-                    onChange={e => setUpdateForm(f => ({ ...f, core_offer: e.target.value }))} 
+                    value={updateForm.product_categories} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, product_categories: e.target.value }))} 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Upcoming Products</label>
+                  <textarea 
+                    placeholder="What products or services are you planning to launch?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={updateForm.upcoming_products} 
+                    onChange={e => setUpdateForm((f: Partial<MockBlueprintData>) => ({ ...f, upcoming_products: e.target.value }))} 
                   />
                 </div>
               </div>
 
-              {/* Value Ladder */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Value Ladder</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {updateForm.value_ladder_snapshot && (['entry', 'mid', 'premium'] as const).map((level) => (
-                    <div className="space-y-2" key={level}>
-                      <label className="block text-gray-200 font-semibold text-sm capitalize">{level} Level</label>
-                      <input 
-                        type="text" 
-                        placeholder="Name"
-                        className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                        value={updateForm.value_ladder_snapshot?.[level]?.name || ''} 
-                        onChange={e => {
-                          const value = e.target.value;
-                          setUpdateForm(f => ({ 
-                            ...f, 
-                            value_ladder_snapshot: { 
-                              ...f.value_ladder_snapshot, 
-                              [level]: { ...f.value_ladder_snapshot?.[level], name: value } 
-                            } as UpdateBlueprintData['value_ladder_snapshot']
-                          }));
-                        }}
-                      />
-                      <input 
-                        type="number" 
-                        placeholder="Price"
-                        className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                        value={updateForm.value_ladder_snapshot?.[level]?.price || 0} 
-                        onChange={e => {
-                          const value = Number(e.target.value);
-                          setUpdateForm(f => ({ 
-                            ...f, 
-                            value_ladder_snapshot: { 
-                              ...f.value_ladder_snapshot, 
-                              [level]: { ...f.value_ladder_snapshot?.[level], price: value } 
-                            } as UpdateBlueprintData['value_ladder_snapshot']
-                          }));
-                        }}
-                      />
-                      <textarea 
-                        placeholder="Description"
-                        className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm h-16" 
-                        value={updateForm.value_ladder_snapshot?.[level]?.description || ''} 
-                        onChange={e => {
-                          const value = e.target.value;
-                          setUpdateForm(f => ({ 
-                            ...f, 
-                            value_ladder_snapshot: { 
-                              ...f.value_ladder_snapshot, 
-                              [level]: { ...f.value_ladder_snapshot?.[level], description: value } 
-                            } as UpdateBlueprintData['value_ladder_snapshot']
-                          }));
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Launch & Marketing */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Launch & Marketing</h3>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Platform Focus</label>
-                  <input 
-                    type="text" 
-                    placeholder="LinkedIn, Twitter, ProductHunt (comma separated)"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={Array.isArray(updateForm.platform_focus) ? updateForm.platform_focus.join(', ') : ''} 
-                    onChange={e => setUpdateForm(f => ({ ...f, platform_focus: e.target.value.split(',').map(s => s.trim()).filter(s => s) }))} 
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Launch Phase *</label>
-                  <select 
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={updateForm.launch_phase} 
-                    onChange={e => setUpdateForm(f => ({ ...f, launch_phase: e.target.value }))} 
-                    required
-                  >
-                    <option value="pre-launch">Pre-Launch</option>
-                    <option value="early-launch">Early Launch</option>
-                    <option value="late-launch">Late Launch</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Primary Funnel Goal</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g., Get 1000 beta signups"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={updateForm.primary_funnel_goal} 
-                    onChange={e => setUpdateForm(f => ({ ...f, primary_funnel_goal: e.target.value }))} 
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Top Ad Channel</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g., LinkedIn Ads"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={updateForm.top_ad_channel} 
-                    onChange={e => setUpdateForm(f => ({ ...f, top_ad_channel: e.target.value }))} 
-                  />
-                </div>
-              </div>
-
-              {/* Operations Stack */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Operations Stack</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {updateForm.ops_stack && (Object.keys(updateForm.ops_stack) as Array<keyof typeof updateForm.ops_stack>).map(key => (
-                    <div key={key}>
-                      <label className="block text-gray-200 font-semibold mb-1 capitalize">{key}</label>
-                      <input 
-                        type="text" 
-                        placeholder={`e.g., ${updateForm.ops_stack?.[key] || '...'}`}
-                        className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                        value={updateForm.ops_stack?.[key] || ''} 
-                        onChange={e => {
-                          const value = e.target.value;
-                          setUpdateForm(f => ({ 
-                            ...f, 
-                            ops_stack: { 
-                              ...f.ops_stack, 
-                              [key]: value 
-                            } as UpdateBlueprintData['ops_stack']
-                          }));
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Owner Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Owner Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Owner Name</label>
-                    <input 
-                      type="text" 
-                      placeholder="Enter owner name"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={updateForm.owner_name} 
-                      onChange={e => setUpdateForm(f => ({ ...f, owner_name: e.target.value }))} 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Owner Email</label>
-                    <input 
-                      type="email" 
-                      placeholder="Enter owner email"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={updateForm.owner_email} 
-                      onChange={e => setUpdateForm(f => ({ ...f, owner_email: e.target.value }))} 
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Status</label>
-                  <select 
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={updateForm.status} 
-                    onChange={e => setUpdateForm(f => ({ ...f, status: e.target.value }))}
-                  >
-                    <option value="draft">Draft</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                    <option value="active">Active</option>
-                    <option value="soft-launch">Soft Launch</option>
-                  </select>
-                </div>
-              </div>
 
               {updateError && <div className="text-red-500 text-sm text-center bg-red-500/10 p-3 rounded">{updateError}</div>}
               
@@ -1278,338 +1165,179 @@ export default function BlueprintPage() {
               <h2 className="text-2xl font-bold text-white">Create Blueprint</h2>
             </div>
             <form className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar" onSubmit={handleCreateBlueprint}>
-              {/* Basic Information */}
+              {/* Form fields in exact API parameter sequence */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Basic Information</h3>
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Name *</label>
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Name *</label>
                   <input 
                     type="text" 
-                    placeholder="Enter blueprint name"
+                    placeholder="Enter your brand name"
                     className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={createForm.name} 
-                    onChange={e => setCreateForm(f => ({ ...f, name: e.target.value }))} 
+                    value={createForm.brand_name} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, brand_name: e.target.value }))} 
                     required 
                   />
                 </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Description *</label>
-                  <textarea 
-                    placeholder="Describe your blueprint"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-20" 
-                    value={createForm.description} 
-                    onChange={e => setCreateForm(f => ({ ...f, description: e.target.value }))} 
+                  <label className="block text-gray-200 font-semibold mb-1">Current Business Stage *</label>
+                  <div className="relative">
+                    <select 
+                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01] appearance-none cursor-pointer pr-10" 
+                      value={createForm.current_business_stage} 
+                      onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, current_business_stage: e.target.value }))} 
                     required 
-                  />
+                    >
+                      <option value="" className="bg-black text-gray-400">Select business stage</option>
+                      <option value="idea_stage" className="bg-black text-white">Idea Stage (No product/service yet)</option>
+                      <option value="pre_launch" className="bg-black text-white">Pre-Launch (Product/service ready but not launched)</option>
+                      <option value="launched" className="bg-black text-white">Launched (Actively selling but growing)</option>
+                      <option value="scaling" className="bg-black text-white">Scaling (Expanding into new markets, hiring, etc.)</option>
+                      <option value="other" className="bg-black text-white">Other</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
                 </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Vision</label>
-                  <textarea 
-                    placeholder="What is your vision?"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
-                    value={createForm.vision} 
-                    onChange={e => setCreateForm(f => ({ ...f, vision: e.target.value }))} 
-                  />
                 </div>
+                </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Mission</label>
-                  <textarea 
+                  <label className="block text-gray-200 font-semibold mb-1">Business Model *</label>
+                  <div className="relative">
+                    <select 
+                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01] appearance-none cursor-pointer pr-10" 
+                      value={createForm.business_model} 
+                      onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, business_model: e.target.value }))} 
+                      required
+                    >
+                      <option value="" className="bg-black text-gray-400">Select business model</option>
+                      <option value="product_based" className="bg-black text-white">Product-Based</option>
+                      <option value="service_based" className="bg-black text-white">Service-Based</option>
+                      <option value="subscription_based" className="bg-black text-white">Subscription-Based</option>
+                      <option value="saas_digital_product" className="bg-black text-white">SaaS / Digital Product</option>
+                      <option value="other" className="bg-black text-white">Other</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Freebies/Downloads</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g., Free templates, guides, tools"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
+                    value={createForm.freebies_downloads} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, freebies_downloads: e.target.value }))} 
+                  />
+              </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Tagline</label>
+                    <input 
+                      type="text" 
+                    placeholder="Your brand tagline or slogan"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
+                    value={createForm.tagline} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, tagline: e.target.value }))} 
+                    />
+                  </div>
+
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Mission Statement</label>
+                    <textarea 
                     placeholder="What is your mission?"
                     className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
-                    value={createForm.mission} 
-                    onChange={e => setCreateForm(f => ({ ...f, mission: e.target.value }))} 
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Core Offer</label>
-                  <input 
-                    type="text" 
-                    placeholder="What is your core offer?"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={createForm.core_offer} 
-                    onChange={e => setCreateForm(f => ({ ...f, core_offer: e.target.value }))} 
-                  />
-                </div>
-              </div>
+                    value={createForm.mission_statement} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, mission_statement: e.target.value }))} 
+                    />
+                  </div>
 
-              {/* Value Ladder */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Value Ladder</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Entry Level */}
-                  <div className="space-y-2">
-                    <label className="block text-gray-200 font-semibold text-sm">Entry Level</label>
-                    <input 
-                      type="text" 
-                      placeholder="Name"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                      value={createForm.value_ladder_snapshot.entry.name} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          entry: { ...f.value_ladder_snapshot.entry, name: e.target.value } 
-                        } 
-                      }))} 
-                    />
-                    <input 
-                      type="number" 
-                      placeholder="Price"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                      value={createForm.value_ladder_snapshot.entry.price} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          entry: { ...f.value_ladder_snapshot.entry, price: Number(e.target.value) } 
-                        } 
-                      }))} 
-                    />
+                <div>
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Vision</label>
                     <textarea 
-                      placeholder="Description"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm h-16" 
-                      value={createForm.value_ladder_snapshot.entry.description} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          entry: { ...f.value_ladder_snapshot.entry, description: e.target.value } 
-                        } 
-                      }))} 
+                    placeholder="What is your vision for the future?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={createForm.brand_vision} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, brand_vision: e.target.value }))} 
                     />
-                  </div>
-
-                  {/* Mid Level */}
-                  <div className="space-y-2">
-                    <label className="block text-gray-200 font-semibold text-sm">Mid Level</label>
-                    <input 
-                      type="text" 
-                      placeholder="Name"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                      value={createForm.value_ladder_snapshot.mid.name} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          mid: { ...f.value_ladder_snapshot.mid, name: e.target.value } 
-                        } 
-                      }))} 
-                    />
-                    <input 
-                      type="number" 
-                      placeholder="Price"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                      value={createForm.value_ladder_snapshot.mid.price} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          mid: { ...f.value_ladder_snapshot.mid, price: Number(e.target.value) } 
-                        } 
-                      }))} 
-                    />
-                    <textarea 
-                      placeholder="Description"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm h-16" 
-                      value={createForm.value_ladder_snapshot.mid.description} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          mid: { ...f.value_ladder_snapshot.mid, description: e.target.value } 
-                        } 
-                      }))} 
-                    />
-                  </div>
-
-                  {/* Premium Level */}
-                  <div className="space-y-2">
-                    <label className="block text-gray-200 font-semibold text-sm">Premium Level</label>
-                    <input 
-                      type="text" 
-                      placeholder="Name"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                      value={createForm.value_ladder_snapshot.premium.name} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          premium: { ...f.value_ladder_snapshot.premium, name: e.target.value } 
-                        } 
-                      }))} 
-                    />
-                    <input 
-                      type="number" 
-                      placeholder="Price"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm" 
-                      value={createForm.value_ladder_snapshot.premium.price} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          premium: { ...f.value_ladder_snapshot.premium, price: Number(e.target.value) } 
-                        } 
-                      }))} 
-                    />
-                    <textarea 
-                      placeholder="Description"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] text-sm h-16" 
-                      value={createForm.value_ladder_snapshot.premium.description} 
-                      onChange={e => setCreateForm(f => ({ 
-                        ...f, 
-                        value_ladder_snapshot: { 
-                          ...f.value_ladder_snapshot, 
-                          premium: { ...f.value_ladder_snapshot.premium, description: e.target.value } 
-                        } 
-                      }))} 
-                    />
-                  </div>
-                </div>
               </div>
 
-              {/* Launch & Marketing */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Launch & Marketing</h3>
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Platform Focus</label>
-                  <input 
-                    type="text" 
-                    placeholder="LinkedIn, Twitter, ProductHunt (comma separated)"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={createForm.platform_focus.join(', ')} 
-                    onChange={e => setCreateForm(f => ({ ...f, platform_focus: e.target.value.split(',').map(s => s.trim()).filter(s => s) }))} 
+                  <label className="block text-gray-200 font-semibold mb-1">Problem Solved</label>
+                  <textarea 
+                    placeholder="What problem does your business solve?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={createForm.problem_solved} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, problem_solved: e.target.value }))} 
                   />
                 </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Launch Phase *</label>
-                  <select 
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={createForm.launch_phase} 
-                    onChange={e => setCreateForm(f => ({ ...f, launch_phase: e.target.value }))} 
-                    required
-                  >
-                    <option value="pre-launch">Pre-Launch</option>
-                    <option value="early-launch">Early Launch</option>
-                    <option value="late-launch">Late Launch</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Primary Funnel Goal</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g., Get 1000 beta signups"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={createForm.primary_funnel_goal} 
-                    onChange={e => setCreateForm(f => ({ ...f, primary_funnel_goal: e.target.value }))} 
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Backstory</label>
+                  <textarea 
+                    placeholder="Tell the story behind your brand"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={createForm.brand_backstory} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, brand_backstory: e.target.value }))} 
                   />
                 </div>
+
                 <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Top Ad Channel</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g., LinkedIn Ads"
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={createForm.top_ad_channel} 
-                    onChange={e => setCreateForm(f => ({ ...f, top_ad_channel: e.target.value }))} 
+                  <label className="block text-gray-200 font-semibold mb-1">Brand Emotions</label>
+                  <textarea 
+                    placeholder="What emotions do you want your brand to evoke?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={createForm.brand_emotions} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, brand_emotions: e.target.value }))} 
                   />
-                </div>
               </div>
 
-              {/* Operations Stack */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Operations Stack</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Host</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g., Vercel"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={createForm.ops_stack.host} 
-                      onChange={e => setCreateForm(f => ({ ...f, ops_stack: { ...f.ops_stack, host: e.target.value } }))} 
+                  <label className="block text-gray-200 font-semibold mb-1">Company Culture</label>
+                  <textarea 
+                    placeholder="Describe your company culture and values"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={createForm.company_culture} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, company_culture: e.target.value }))} 
                     />
                   </div>
+
                   <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Email</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g., Resend"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={createForm.ops_stack.email} 
-                      onChange={e => setCreateForm(f => ({ ...f, ops_stack: { ...f.ops_stack, email: e.target.value } }))} 
+                  <label className="block text-gray-200 font-semibold mb-1">Products/Services Description</label>
+                  <textarea 
+                    placeholder="Describe your products or services"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={createForm.products_services_description} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, products_services_description: e.target.value }))} 
                     />
                   </div>
+
                   <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Database</label>
+                  <label className="block text-gray-200 font-semibold mb-1">Product Categories</label>
                     <input 
                       type="text" 
-                      placeholder="e.g., Supabase"
+                    placeholder="e.g., Software, Consulting, E-commerce"
                       className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={createForm.ops_stack.database} 
-                      onChange={e => setCreateForm(f => ({ ...f, ops_stack: { ...f.ops_stack, database: e.target.value } }))} 
+                    value={createForm.product_categories} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, product_categories: e.target.value }))} 
                     />
-                  </div>
-                  <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Payments</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g., Stripe"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={createForm.ops_stack.payments} 
-                      onChange={e => setCreateForm(f => ({ ...f, ops_stack: { ...f.ops_stack, payments: e.target.value } }))} 
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-gray-200 font-semibold mb-1">Analytics</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g., PostHog"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={createForm.ops_stack.analytics} 
-                      onChange={e => setCreateForm(f => ({ ...f, ops_stack: { ...f.ops_stack, analytics: e.target.value } }))} 
-                    />
-                  </div>
-                </div>
               </div>
 
-              {/* Owner Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">Owner Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Owner Name</label>
-                    <input 
-                      type="text" 
-                      placeholder="Enter owner name"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={createForm.owner_name} 
-                      onChange={e => setCreateForm(f => ({ ...f, owner_name: e.target.value }))} 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-200 font-semibold mb-1">Owner Email</label>
-                    <input 
-                      type="email" 
-                      placeholder="Enter owner email"
-                      className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                      value={createForm.owner_email} 
-                      onChange={e => setCreateForm(f => ({ ...f, owner_email: e.target.value }))} 
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-gray-200 font-semibold mb-1">Status</label>
-                  <select 
-                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#d0ed01]" 
-                    value={createForm.status} 
-                    onChange={e => setCreateForm(f => ({ ...f, status: e.target.value }))}
-                  >
-                    <option value="draft">Draft</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                    <option value="active">Active</option>
-                    <option value="soft-launch">Soft Launch</option>
-                  </select>
+                  <label className="block text-gray-200 font-semibold mb-1">Upcoming Products</label>
+                  <textarea 
+                    placeholder="What products or services are you planning to launch?"
+                    className="w-full px-3 py-2 rounded bg-black bg-opacity-60 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d0ed01] h-16" 
+                    value={createForm.upcoming_products} 
+                    onChange={e => setCreateForm((f: MockBlueprintData) => ({ ...f, upcoming_products: e.target.value }))} 
+                  />
                 </div>
               </div>
 

@@ -14,8 +14,18 @@ type Profile = {
 };
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Mock profile data
+  const [profile, setProfile] = useState<Profile | null>({
+    id: "1",
+    full_name: "John Doe",
+    phone: "+1 (555) 123-4567",
+    avatar_url: "/images/profile.jpg",
+    bio: "AI enthusiast and startup founder. Building the future of business automation.",
+    org_id: "symbiotes-ai",
+    email: "john.doe@example.com"
+  });
+  
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showEdit, setShowEdit] = useState(false);
   const [editForm, setEditForm] = useState<Profile>({});
@@ -34,59 +44,44 @@ export default function ProfilePage() {
     }
   }, [profile]);
 
-  // Auto update organization ID if available
+  // Mock function to auto update organization ID (frontend only)
   const handleAutoUpdateOrg = async (organizationId: string) => {
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch('http://localhost:8000/update-profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-        body: JSON.stringify({
-          org_id: organizationId
-        })
-      });
-      const data = await response.json();
-      if (response.ok && data.profile) {
-        setProfile(data.profile);
-        setShowOrgWarning(false);
-      }
-    } catch (err) {
-      console.error('Failed to auto-update organization ID:', err);
-    }
+    // Simulate API delay
+    setTimeout(() => {
+      setProfile(prev => prev ? {
+        ...prev,
+        org_id: organizationId
+      } : null);
+      setShowOrgWarning(false);
+    }, 500);
   };
 
-  // Fetch profile on mount
+  // Mock function to fetch profile (frontend only)
   useEffect(() => {
     const fetchProfile = async () => {
       setLoading(true);
       setError("");
-      try {
-        const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+      
+      // Simulate API delay
+      setTimeout(() => {
         const organizationId = typeof window !== 'undefined' ? localStorage.getItem('organizationId') : null;
         
-        const response = await fetch('http://localhost:8000/profile', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-          },
-        });
-        const data = await response.json();
-        if (response.ok && data.profile) {
-          setProfile(data.profile);
-          // Show warning if no organization is assigned and no organizationId in localStorage
-          setShowOrgWarning(!data.profile.org_id && !organizationId);
-        } else {
-          setError(data.detail || data.message || 'Failed to fetch profile');
-        }
-      } catch (err) {
-        setError('Failed to fetch profile');
-      } finally {
+        // Use mock profile data
+        const mockProfile: Profile = {
+          id: "1",
+          full_name: "John Doe",
+          phone: "+1 (555) 123-4567",
+          avatar_url: "/images/profile.jpg",
+          bio: "AI enthusiast and startup founder. Building the future of business automation.",
+          org_id: organizationId || "symbiotes-ai",
+          email: "john.doe@example.com"
+        };
+        
+        setProfile(mockProfile);
+        // Show warning if no organization is assigned and no organizationId in localStorage
+        setShowOrgWarning(!mockProfile.org_id && !organizationId);
         setLoading(false);
-      }
+      }, 500);
     };
     fetchProfile();
   }, []);
@@ -105,7 +100,7 @@ export default function ProfilePage() {
     setShowEdit(true);
   };
 
-  // Handle update profile
+  // Mock function to update profile (frontend only)
   const handleUpdateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
@@ -117,67 +112,45 @@ export default function ProfilePage() {
 
     setEditLoading(true);
     setEditError("");
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const updateBody: any = {};
-      if (editForm.full_name) updateBody.full_name = editForm.full_name;
-      if (editForm.phone) updateBody.phone = editForm.phone;
-      if (editForm.avatar_url) updateBody.avatar_url = editForm.avatar_url;
-      if (editForm.bio) updateBody.bio = editForm.bio;
-      if (editForm.org_id) updateBody.org_id = editForm.org_id;
+    
+    // Simulate API delay
+    setTimeout(() => {
+      // Update profile with form data
+      const updatedProfile: Profile = {
+        ...profile,
+        full_name: editForm.full_name || profile?.full_name,
+        phone: editForm.phone || profile?.phone,
+        avatar_url: editForm.avatar_url || profile?.avatar_url,
+        bio: editForm.bio || profile?.bio,
+        org_id: editForm.org_id || profile?.org_id,
+      };
       
-      const response = await fetch('http://localhost:8000/update-profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-        body: JSON.stringify(updateBody)
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.detail || data.message || 'Failed to update profile');
-      }
+      setProfile(updatedProfile);
       setShowEdit(false);
-      setProfile(data.profile);
-      setShowOrgWarning(!data.profile.org_id);
+      setShowOrgWarning(!updatedProfile.org_id);
       
       // Update localStorage if org_id was updated
       if (editForm.org_id && (!profile?.org_id || profile.org_id !== editForm.org_id)) {
         localStorage.setItem('organizationId', editForm.org_id);
       }
-    } catch (err) {
-      setEditError(err instanceof Error ? err.message : 'Failed to update profile');
-    } finally {
+      
       setEditLoading(false);
-    }
+    }, 1000);
   };
 
-  // Handle delete profile
+  // Mock function to delete profile (frontend only)
   const handleDeleteProfile = async () => {
     if (!window.confirm('Are you sure you want to delete your profile? This action cannot be undone.')) return;
     setDeleteLoading(true);
     setDeleteError("");
     setDeleteSuccess(false);
-    try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-      const response = await fetch('http://localhost:8000/profile', {
-        method: 'DELETE',
-        headers: {
-          ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
-        },
-      });
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.detail || data.message || 'Failed to delete profile');
-      }
+    
+    // Simulate API delay
+    setTimeout(() => {
       setProfile(null);
       setDeleteSuccess(true);
-    } catch (err) {
-      setDeleteError(err instanceof Error ? err.message : 'Failed to delete profile');
-    } finally {
       setDeleteLoading(false);
-    }
+    }, 1000);
   };
 
   return (
