@@ -5,7 +5,6 @@ import ProductTrafficChart from './ProductTrafficChart';
 import { FaGithub, FaDiscord, FaLinkedin, FaFacebook, FaTwitter, FaGoogle } from 'react-icons/fa';
 import { MdStackedLineChart } from 'react-icons/md';
 import { 
-  FiSettings, 
   FiRefreshCw, 
   FiCheck, 
   FiX, 
@@ -16,17 +15,14 @@ import {
   FiClock,
   FiUser,
   FiAlertTriangle,
-  FiMoreVertical,
-  FiEye,
-  FiEdit,
-  FiTrash2,
+  FiMoreVertical
 } from 'react-icons/fi';
 
 // Integration types
 interface Integration {
   id: string;
   name: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
   status: 'connected' | 'disconnected' | 'connecting' | 'error';
   description: string;
   features: string[];
@@ -401,7 +397,7 @@ const AuthModal = ({
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       onSuccess(integration.id, 'google');
-    } catch (err) {
+    } catch {
       setError('Authentication failed. Please try again.');
     } finally {
       setIsConnecting(false);
@@ -415,7 +411,7 @@ const AuthModal = ({
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       onSuccess(integration.id, 'platform');
-    } catch (err) {
+    } catch {
       setError('Authentication failed. Please try again.');
     } finally {
       setIsConnecting(false);
@@ -429,7 +425,7 @@ const AuthModal = ({
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       onSuccess(integration.id, 'symbiotes');
-    } catch (err) {
+    } catch {
       setError('Authentication failed. Please try again.');
     } finally {
       setIsConnecting(false);
@@ -688,49 +684,7 @@ const IntegrationsPage = () => {
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const popupRef = useRef<Window | null>(null);
 
-  // Helper to open popup and listen for OAuth completion
-  const openOAuthPopup = (url: string, integrationId: string) => {
-    // Center the popup
-    const width = 500;
-    const height = 700;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
-    const popup = window.open(
-      url,
-      'oauthPopup',
-      `width=${width},height=${height},left=${left},top=${top},resizable,scrollbars=yes,status=1`
-    );
-    popupRef.current = popup;
 
-    // Listen for postMessage from popup
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data === 'oauth-success') {
-        // Close popup, update UI, show success
-        if (popup) popup.close();
-        setIntegrationsList(prev => prev.map(integration =>
-          integration.id === integrationId
-            ? {
-                ...integration,
-                status: 'connected' as const,
-                isActive: true,
-                lastSync: 'Just now',
-                syncStatus: 'success',
-                accountInfo: {
-                  username: 'connected_user',
-                  email: 'user@example.com'
-                }
-              }
-            : integration
-        ));
-        setNotification({
-          type: 'success',
-          message: `${integrations.find(i => i.id === integrationId)?.name} integration connected successfully!`
-        });
-        window.removeEventListener('message', handleMessage);
-      }
-    };
-    window.addEventListener('message', handleMessage);
-  };
 
   // Handle URL parameters for OAuth callback results
   useEffect(() => {

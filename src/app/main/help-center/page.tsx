@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, ReactNode } from "react";
-import { FiSearch, FiBookOpen, FiUsers, FiCreditCard, FiSettings, FiPlayCircle, FiDownload, FiChevronDown, FiChevronUp, FiHeadphones, FiMessageCircle, FiZap, FiCheckSquare, FiArrowRight, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import React, { useState } from "react";
+import { FiSearch, FiBookOpen, FiUsers, FiCreditCard, FiSettings, FiPlayCircle, FiDownload, FiChevronDown, FiChevronUp, FiHeadphones, FiMessageCircle, FiZap, FiCheckSquare, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaRobot } from "react-icons/fa6";
 
 const knowledgeBaseCategories = [
@@ -39,50 +39,7 @@ const resources = [
   { title: "Execution Timeline Template (Excel)", icon: <FiBookOpen className="text-xl text-[#d0ed01]" />, abstract: "Plan and track your execution phases.", file: "timeline-template.xlsx" },
 ];
 
-const aiSamples = [
-  {
-    q: "How do I start a blueprint?",
-    a: (
-      <>
-        To start a new blueprint, click on the <b>➕ Create Blueprint</b> button in the top Quick Actions panel.<br />
-        You'll be asked to name your blueprint, set goals, and define execution phases.<br />
-        Would you like me to open the Create Blueprint modal now?<br />
-        <div className="flex gap-2 mt-2">
-          <button className="px-4 py-1 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#bada55] transition">Yes</button>
-          <button className="px-4 py-1 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#333] transition">No, thanks</button>
-        </div>
-      </>
-    ),
-  },
-  {
-    q: "Can I invite my team to my organization?",
-    a: (
-      <>
-        Yes! Head over to the Organization section → <b>Members</b>.<br />
-        Click on <b>➕ Invite</b>, then enter their email addresses and assign roles (Viewer, Editor, Owner).<br />
-        Would you like to invite someone now?<br />
-        <div className="flex gap-2 mt-2">
-          <button className="px-4 py-1 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#bada55] transition">Invite Now</button>
-          <button className="px-4 py-1 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#333] transition">Show me how</button>
-        </div>
-      </>
-    ),
-  },
-  {
-    q: "Where can I find my billing info?",
-    a: (
-      <>
-        Go to the <b>⚙️ Settings</b> section → <b>Billing</b> tab.<br />
-        There you'll see your current plan, past invoices, and payment method.<br />
-        Would you like to view your billing dashboard?<br />
-        <div className="flex gap-2 mt-2">
-          <button className="px-4 py-1 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#bada55] transition">Open Billing</button>
-          <button className="px-4 py-1 rounded-lg bg-[#232323] text-white font-semibold hover:bg-[#333] transition">Set Reminder</button>
-        </div>
-      </>
-    ),
-  },
-];
+
 
 // Featured Q&A with intent matching
 const featuredQA = [
@@ -94,7 +51,7 @@ const featuredQA = [
       'just joined, what now',
       'i just got started',
       'idk what to do first',
-      "i'm starting my project, what should i do first",
+      "i&apos;m starting my project, what should i do first",
       'i am starting my project, what should i do first',
       'i just signed up',
       'what should i do first',

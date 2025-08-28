@@ -19,7 +19,7 @@ const websiteTrafficData = {
     {
       label: 'Visits',
       data: [1200, 950, 800, 600, 700, 400],
-      backgroundColor: (context: any) => {
+      backgroundColor: (context: { chart: { ctx: CanvasRenderingContext2D } }) => {
         const ctx = context.chart.ctx;
         const gradient = ctx.createLinearGradient(0, 0, 600, 0);
         gradient.addColorStop(0, '#d0ed01');

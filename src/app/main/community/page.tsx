@@ -12,12 +12,9 @@ import {
   FiUsers,
   FiMessageSquare,
   FiLink,
-  FiExternalLink,
-  FiX,
   FiStar,
   FiBriefcase,
   FiAward,
-  FiMail,
   FiUserPlus,
   FiVideo,
   FiUserCheck
@@ -399,9 +396,7 @@ export default function CommunityPage() {
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [showProfileDrawer, setShowProfileDrawer] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showAddMember, setShowAddMember] = useState(false);
-  const [showNewProject, setShowNewProject] = useState(false);
   const [showCommunityCall, setShowCommunityCall] = useState(false);
   const [showFindCollaborator, setShowFindCollaborator] = useState(false);
 
@@ -657,7 +652,7 @@ export default function CommunityPage() {
               <div className="bg-[#18181b] rounded-2xl p-8 w-full max-w-md border border-white/10 shadow-2xl relative">
                 <button onClick={() => setShowFindCollaborator(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">✕</button>
                 <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2"><FiUserCheck /> Find a Collaborator</h2>
-                <div className="mb-3 text-gray-400 text-sm">Smart match: "Match me with someone building in AI/EdTech in early stage."</div>
+                <div className="mb-3 text-gray-400 text-sm">Smart match: &quot;Match me with someone building in AI/EdTech in early stage.&quot;</div>
                 <div className="bg-[#232323] rounded-lg p-4 text-gray-400 text-xs mb-2">(Future: Show recommended users to connect with based on tags, industry, phase)</div>
                 <button className="w-full px-4 py-2 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#bada55] transition">Try Smart Match</button>
               </div>

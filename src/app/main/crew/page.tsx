@@ -5,20 +5,15 @@ import {
   FiPlus,
   FiSearch,
   FiFilter,
-  FiMapPin,
-  FiMessageSquare,
-  FiExternalLink,
   FiX,
   FiStar,
   FiBriefcase,
   FiAward,
-  FiMail,
   FiCheckCircle,
   FiClock,
   FiUserPlus,
   FiUserCheck,
-  FiSettings,
-  FiMoreHorizontal
+  FiSettings
 } from "react-icons/fi";
 
 interface CrewMember {
@@ -155,7 +150,7 @@ export default function CrewPage() {
   const [selectedMember, setSelectedMember] = useState<CrewMember | null>(null);
   const [showRoleDrawer, setShowRoleDrawer] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   const [editMode, setEditMode] = useState<null | "reassign" | "change">(null);
   const [editRole, setEditRole] = useState("");
   const [editAssignee, setEditAssignee] = useState("");

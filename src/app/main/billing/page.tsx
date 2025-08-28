@@ -3,12 +3,9 @@ import React, { useState } from "react";
 import {
   FiCheckCircle,
   FiChevronDown,
-  FiArrowRight,
-  FiCreditCard,
   FiDownload,
   FiLink2,
-  FiSearch,
-  FiFilter
+  FiSearch
 } from "react-icons/fi";
 
 const plans = [
@@ -142,7 +139,7 @@ export default function BillingPage() {
   const [sliderValue, setSliderValue] = useState(14000);
   const [activeTab, setActiveTab] = useState("All");
   const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState({ date: "", status: "", method: "" });
+  const [filters] = useState({ date: "", status: "", method: "" });
   const [showPaymentHistory, setShowPaymentHistory] = useState(false);
 
   const filteredPayments = mockPayments.filter((p) => {
