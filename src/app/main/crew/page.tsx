@@ -2,13 +2,9 @@
 import React, { useState } from "react";
 import {
   FiUsers,
-  FiPlus,
   FiSearch,
   FiFilter,
   FiX,
-  FiStar,
-  FiBriefcase,
-  FiAward,
   FiCheckCircle,
   FiClock,
   FiUserPlus,
