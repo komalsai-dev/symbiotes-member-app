@@ -13,7 +13,8 @@ import {
   FiClock,
   FiUserPlus,
   FiUserCheck,
-  FiSettings
+  FiSettings,
+  FiMail
 } from "react-icons/fi";
 
 interface CrewMember {
