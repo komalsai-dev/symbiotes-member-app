@@ -2,6 +2,10 @@
 
 import Navigation from './Navigation';
 
-export default function NavigationWrapper() {
-  return <Navigation />;
+interface NavigationWrapperProps {
+  onClose?: () => void;
+}
+
+export default function NavigationWrapper({ onClose }: NavigationWrapperProps) {
+  return <Navigation onClose={onClose} />;
 }

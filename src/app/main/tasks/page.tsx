@@ -182,11 +182,11 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="flex w-full gap-8">
+    <div className="flex flex-col lg:flex-row w-full gap-4 lg:gap-8">
       {/* Left: Task List */}
-      <div className="flex-1 min-w-[350px] max-w-[480px]">
-        <h2 className="text-3xl font-bold mb-2">Tasks</h2>
-        <div className="flex gap-6 mb-6 text-lg font-semibold">
+      <div className="flex-1 min-w-0 lg:min-w-[350px] lg:max-w-[480px]">
+        <h2 className="text-2xl lg:text-3xl font-bold mb-2 text-white">Tasks</h2>
+        <div className="flex flex-wrap gap-3 lg:gap-6 mb-4 lg:mb-6 text-sm lg:text-lg font-semibold">
           {['Recently', 'Today', 'Upcoming', 'Later'].map(tab => (
             <span
               key={tab}
@@ -202,35 +202,35 @@ export default function TasksPage() {
             </span>
           ))}
         </div>
-        <div className="mb-4">
+        <div className="mb-3 lg:mb-4">
           <button
-            className="px-4 py-2 rounded bg-[#d0ed01] text-black font-semibold text-sm hover:bg-[#b6d000] transition"
+            className="px-3 lg:px-4 py-2 rounded bg-[#d0ed01] text-black font-semibold text-sm hover:bg-[#b6d000] transition"
           >
             + Add Task
           </button>
         </div>
-        <div className="flex flex-col gap-6 pr-2 max-h-[600px] overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col gap-4 lg:gap-6 pr-2 max-h-[500px] lg:max-h-[600px] overflow-y-auto custom-scrollbar">
           {(tasksByTab[activeTab] || []).length > 0 ? (
             tasksByTab[activeTab].map((task: BlueprintTask, idx: number) => (
               <div
                 key={task.title}
-                className="rounded-2xl p-6 text-white text-lg font-semibold border border-gray-200/30 flex flex-col gap-2 relative cursor-pointer transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-[1.02] bg-white/10 backdrop-blur-md"
+                className="rounded-2xl p-4 lg:p-6 text-white text-base lg:text-lg font-semibold border border-gray-200/30 flex flex-col gap-2 relative cursor-pointer transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-[1.02] bg-white/10 backdrop-blur-md"
                 style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)' }}
                 onClick={() => { setSelectedTask(task); setIsModalOpen(true); }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <span className="flex items-center justify-center w-9 h-9 rounded-full bg-black/30 border border-white/10 shadow-inner">
+                  <div className="flex items-center gap-2 lg:gap-3 flex-1 min-w-0">
+                    <span className="flex items-center justify-center w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-black/30 border border-white/10 shadow-inner flex-shrink-0">
                       {task.icon}
                     </span>
-                    <span className="truncate max-w-[60vw] text-xl font-bold tracking-tight">{task.title}</span>
+                    <span className="truncate text-lg lg:text-xl font-bold tracking-tight">{task.title}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {task.done && <FiCheckCircle className="text-[#d0ed01] text-2xl" />}
-                    <span className="bg-black/40 border border-[#d0ed01] text-[#d0ed01] rounded-full px-3 py-0.5 text-base font-bold ml-2 flex items-center justify-center">{task.subtasks}</span>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {task.done && <FiCheckCircle className="text-[#d0ed01] text-xl lg:text-2xl" />}
+                    <span className="bg-black/40 border border-[#d0ed01] text-[#d0ed01] rounded-full px-2 lg:px-3 py-0.5 text-sm lg:text-base font-bold flex items-center justify-center">{task.subtasks}</span>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2 mt-1">
+                <div className="flex flex-wrap gap-1 lg:gap-2 mt-1">
                   {task.tags.map((tag: string) => (
                     <span key={tag} className="bg-gray-800/80 text-gray-200 text-xs px-2 py-0.5 rounded shadow-sm border border-gray-700/40">{tag}</span>
                   ))}
@@ -238,9 +238,9 @@ export default function TasksPage() {
                     <span key={label.text} className={`text-xs px-2 py-0.5 rounded shadow-sm border border-white/10 ${label.color}`}>{label.text}</span>
                   ))}
                 </div>
-                <div className="flex items-center gap-2 mt-3">
+                <div className="flex items-center gap-1 lg:gap-2 mt-2 lg:mt-3">
                   {task.assignees.map((a: string) => (
-                    <span key={a} className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#23243a] to-[#181926] text-[#d0ed01] text-base font-bold border border-white/20 shadow-lg">{a.split(' ').map((w: string) => w[0]).join('')}</span>
+                    <span key={a} className="inline-flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-gradient-to-br from-[#23243a] to-[#181926] text-[#d0ed01] text-sm lg:text-base font-bold border border-white/20 shadow-lg">{a.split(' ').map((w: string) => w[0]).join('')}</span>
                   ))}
                 </div>
               </div>
@@ -251,20 +251,20 @@ export default function TasksPage() {
         </div>
         {/* Modal for task details */}
         {isModalOpen && selectedTask && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <div className="bg-[#23243a] rounded-2xl shadow-2xl p-8 min-w-[320px] max-w-[90vw] text-white relative border border-white/10">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+            <div className="bg-[#23243a] rounded-2xl shadow-2xl p-6 lg:p-8 min-w-[320px] max-w-[90vw] text-white relative border border-white/10">
               <button
-                className="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl font-bold"
+                className="absolute top-3 right-3 text-gray-400 hover:text-white text-xl lg:text-2xl font-bold"
                 onClick={() => setIsModalOpen(false)}
                 aria-label="Close"
               >
                 &times;
               </button>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="flex items-center justify-center w-10 h-10 rounded-full bg-black/30 border border-white/10 shadow-inner">{selectedTask.icon}</span>
-                <h3 className="text-2xl font-bold tracking-tight mb-0">{selectedTask.title}</h3>
+              <div className="flex items-center gap-2 lg:gap-3 mb-3">
+                <span className="flex items-center justify-center w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-black/30 border border-white/10 shadow-inner">{selectedTask.icon}</span>
+                <h3 className="text-xl lg:text-2xl font-bold tracking-tight mb-0">{selectedTask.title}</h3>
               </div>
-              <div className="flex flex-wrap gap-2 mb-2">
+              <div className="flex flex-wrap gap-1 lg:gap-2 mb-2">
                 {selectedTask.tags.map((tag: string) => (
                   <span key={tag} className="bg-gray-800/80 text-gray-200 text-xs px-2 py-0.5 rounded shadow-sm border border-gray-700/40">{tag}</span>
                 ))}
@@ -272,9 +272,9 @@ export default function TasksPage() {
                   <span key={label.text} className={`text-xs px-2 py-0.5 rounded shadow-sm border border-white/10 ${label.color}`}>{label.text}</span>
                 ))}
               </div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-1 lg:gap-2 mb-2">
                 {selectedTask.assignees.map((a: string) => (
-                  <span key={a} className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#23243a] to-[#181926] text-[#d0ed01] text-base font-bold border border-white/20 shadow-lg">{a.split(' ').map((w:string)=>w[0]).join('')}</span>
+                  <span key={a} className="inline-flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-gradient-to-br from-[#23243a] to-[#181926] text-[#d0ed01] text-sm lg:text-base font-bold border border-white/20 shadow-lg">{a.split(' ').map((w:string)=>w[0]).join('')}</span>
                 ))}
               </div>
               <div className="text-sm text-gray-300 mb-2">Subtasks: <span className="text-[#d0ed01] font-bold">{selectedTask.subtasks}</span></div>
@@ -284,61 +284,61 @@ export default function TasksPage() {
         )}
       </div>
       {/* Right: Two Smart Cards - Premium Wide Style */}
-      <div className="flex-1 flex flex-col min-w-[350px] gap-10 max-w-[900px] mx-auto mt-8">
+      <div className="flex-1 flex flex-col min-w-0 lg:min-w-[350px] gap-6 lg:gap-10 max-w-[900px] mx-auto mt-6 lg:mt-8">
         {/* Smart Calendar Module */}
-        <div className="rounded-2xl bg-[#18191c]/80 border border-[#d0ed01]/30 shadow-[0_8px_40px_0_rgba(208,237,1,0.10)] p-6 flex flex-col gap-3 w-full relative overflow-hidden max-w-[600px] mx-auto" style={{minWidth: 0, backdropFilter: 'blur(8px)'}}>
+        <div className="rounded-2xl bg-[#18191c]/80 border border-[#d0ed01]/30 shadow-[0_8px_40px_0_rgba(208,237,1,0.10)] p-4 lg:p-6 flex flex-col gap-3 w-full relative overflow-hidden max-w-[600px] mx-auto" style={{minWidth: 0, backdropFilter: 'blur(8px)'}}>
           <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-transparent" style={{boxShadow: '0 0 24px 4px #d0ed01, 0 0 60px 0 #a78bfa22'}}></div>
           <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2 text-base font-bold text-white tracking-tight">
-              <FiCalendar className="text-[#d0ed01] text-lg drop-shadow-lg" /> Today - April 10, 2021
+            <div className="flex items-center gap-2 text-sm lg:text-base font-bold text-white tracking-tight">
+              <FiCalendar className="text-[#d0ed01] text-base lg:text-lg drop-shadow-lg" /> Today - April 10, 2021
             </div>
-            <button className="flex items-center justify-center bg-[#d0ed01] text-black rounded-full w-7 h-7 shadow-lg hover:scale-105 transition-all text-sm border border-[#d0ed01]">
+            <button className="flex items-center justify-center bg-[#d0ed01] text-black rounded-full w-6 h-6 lg:w-7 lg:h-7 shadow-lg hover:scale-105 transition-all text-sm border border-[#d0ed01]">
               <FiPlus />
             </button>
           </div>
-          {/* Boxed Month Calendar */}
-          <div className="flex flex-col items-center mb-2">
-            <div className="grid grid-cols-7 gap-0.5 w-full mb-1">
-              {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
-                <div key={d} className="text-xs text-gray-400 font-semibold text-center py-0.5 tracking-wide uppercase">{d}</div>
+          {/* Mobile Calendar Grid */}
+          <div className="flex flex-col items-center mb-2 w-full">
+            <div className="text-white font-bold text-sm mb-2">APR</div>
+            <div className="grid grid-cols-7 gap-1 w-full mb-1" style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)'}}>
+              {["M","T","W","T","F","S","S"].map((d, i) => (
+                <div key={d} className={`text-xs font-semibold text-center py-1 ${i === 6 ? 'text-red-400' : 'text-white'}`}>{d}</div>
               ))}
             </div>
-            <div className="grid grid-cols-7 gap-0.5 w-full">
-              {Array.from({length: 35}, (_, i) => {
-                const day = i - 3;
-                const isPrevOrNext = day < 1 || day > 30;
+            <div className="grid grid-cols-7 gap-1 w-full" style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)'}}>
+              {Array.from({length: 28}, (_, i) => {
+                const day = i + 1;
                 const isToday = day === 11;
+                const isSunday = (i + 1) % 7 === 0;
+                
                 return (
                   <div
                     key={i}
-                    className={`w-5 h-5 flex items-center justify-center rounded-md font-bold text-xs text-center transition-all duration-200 cursor-pointer border
-                      ${isToday ? 'bg-[#d0ed01]/90 text-black border-[#d0ed01] shadow-[0_0_6px_2px_#d0ed01] animate-pulse' :
-                        isPrevOrNext ? 'bg-transparent text-gray-600 border-transparent' :
-                        'bg-[#23242a]/80 text-white border-[#23242a] hover:bg-[#d0ed01]/10 hover:text-[#d0ed01]'}
+                    className={`aspect-square min-w-0 flex items-center justify-center rounded cursor-pointer
+                      ${isToday ? 'bg-[#d0ed01] text-black' : 
+                        isSunday ? 'text-red-400' : 'text-white'}
                     `}
-                    style={isToday ? { boxShadow: '0 0 8px 2px #d0ed01' } : {}}
                   >
-                    {day > 0 && day <= 30 ? day : ''}
+                    <span className="text-xs font-medium">{day}</span>
                   </div>
                 );
               })}
             </div>
           </div>
           {/* Quick Stats */}
-          <div className="flex justify-between items-center mt-4 pt-4 border-t border-[#33343a]/50">
+          <div className="flex flex-col lg:flex-row justify-between items-center mt-4 pt-4 border-t border-[#33343a]/50 gap-3">
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-center">
-                <span className="text-[#d0ed01] font-bold text-lg">12</span>
+                <span className="text-[#d0ed01] font-bold text-base lg:text-lg">12</span>
                 <span className="text-gray-400 text-xs">Events</span>
               </div>
-              <div className="w-px h-8 bg-[#33343a]"></div>
+              <div className="w-px h-6 lg:h-8 bg-[#33343a]"></div>
               <div className="flex flex-col items-center">
-                <span className="text-purple-400 font-bold text-lg">8</span>
+                <span className="text-purple-400 font-bold text-base lg:text-lg">8</span>
                 <span className="text-gray-400 text-xs">Tasks</span>
               </div>
-              <div className="w-px h-8 bg-[#33343a]"></div>
+              <div className="w-px h-6 lg:h-8 bg-[#33343a]"></div>
               <div className="flex flex-col items-center">
-                <span className="text-cyan-400 font-bold text-lg">3</span>
+                <span className="text-cyan-400 font-bold text-base lg:text-lg">3</span>
                 <span className="text-gray-400 text-xs">Reminders</span>
               </div>
             </div>
@@ -349,36 +349,36 @@ export default function TasksPage() {
           </div>
         </div>
         {/* Productivity & Progress Snapshot */}
-        <div className="rounded-2xl bg-[#18191c]/80 border border-[#d0ed01]/30 shadow-[0_8px_40px_0_rgba(208,237,1,0.10)] p-8 flex flex-col gap-6 w-full relative overflow-hidden max-w-[600px] mx-auto" style={{minWidth: 0, backdropFilter: 'blur(8px)'}}>
+        <div className="rounded-2xl bg-[#18191c]/80 border border-[#d0ed01]/30 shadow-[0_8px_40px_0_rgba(208,237,1,0.10)] p-6 lg:p-8 flex flex-col gap-4 lg:gap-6 w-full relative overflow-hidden max-w-[600px] mx-auto" style={{minWidth: 0, backdropFilter: 'blur(8px)'}}>
           <div className="absolute inset-0 pointer-events-none rounded-2xl border-2 border-transparent" style={{boxShadow: '0 0 24px 4px #d0ed01, 0 0 60px 0 #a78bfa22'}}></div>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3 text-xl font-bold text-white tracking-tight">
-              <FiTrendingUp className="text-[#b388ff] text-2xl" /> Productivity Snapshot
+          <div className="flex items-center justify-between mb-3 lg:mb-4">
+            <div className="flex items-center gap-2 lg:gap-3 text-lg lg:text-xl font-bold text-white tracking-tight">
+              <FiTrendingUp className="text-[#b388ff] text-xl lg:text-2xl" /> Productivity Snapshot
             </div>
-            <FiTarget className="text-2xl text-[#d0ed01] cursor-pointer" title="Productivity Graph" />
+            <FiTarget className="text-xl lg:text-2xl text-[#d0ed01] cursor-pointer" title="Productivity Graph" />
           </div>
-          <div className="flex items-center gap-4 mb-4">
-            <FiClock className="text-xl text-gray-300" />
-            <span className="text-white font-semibold text-base">Focus Time:</span>
-            <span className="text-[#d0ed01] font-bold text-base">47 min today</span>
+          <div className="flex items-center gap-3 lg:gap-4 mb-3 lg:mb-4">
+            <FiClock className="text-lg lg:text-xl text-gray-300" />
+            <span className="text-white font-semibold text-sm lg:text-base">Focus Time:</span>
+            <span className="text-[#d0ed01] font-bold text-sm lg:text-base">47 min today</span>
           </div>
           {/* Progress Bar */}
-          <div className="flex items-center gap-4 mb-4">
-            <FiTrendingUp className="text-xl text-purple-300" />
-            <span className="text-white font-semibold text-base">Task Progress:</span>
-            <div className="flex-1 h-4 bg-[#23242a]/80 rounded-full overflow-hidden relative max-w-[200px]">
+          <div className="flex items-center gap-3 lg:gap-4 mb-3 lg:mb-4">
+            <FiTrendingUp className="text-lg lg:text-xl text-purple-300" />
+            <span className="text-white font-semibold text-sm lg:text-base">Task Progress:</span>
+            <div className="flex-1 h-3 lg:h-4 bg-[#23242a]/80 rounded-full overflow-hidden relative max-w-[150px] lg:max-w-[200px]">
               <div className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#d0ed01] via-purple-400 to-cyan-400 animate-pulse" style={{ width: '60%' }}></div>
             </div>
-            <span className="text-[#d0ed01] font-bold text-base ml-2">60%</span>
+            <span className="text-[#d0ed01] font-bold text-sm lg:text-base ml-2">60%</span>
           </div>
-          <div className="flex items-center gap-4 mb-4">
-            <FiTarget className="text-xl text-pink-300" />
-            <span className="text-white font-semibold text-base">Daily Goal:</span>
-            <span className="text-purple-300 font-bold text-base">Finalize "Draft Initial Blueprint"</span>
+          <div className="flex items-center gap-3 lg:gap-4 mb-3 lg:mb-4">
+            <FiTarget className="text-lg lg:text-xl text-pink-300" />
+            <span className="text-white font-semibold text-sm lg:text-base">Daily Goal:</span>
+            <span className="text-purple-300 font-bold text-sm lg:text-base">Finalize "Draft Initial Blueprint"</span>
           </div>
-          <div className="flex items-center gap-4 mt-2">
-            <FiStar className="text-xl text-yellow-300" />
-            <span className="text-white/90 text-sm">Tip: You're <span className="text-[#d0ed01] font-bold">1 task</span> away from streak!</span>
+          <div className="flex items-center gap-3 lg:gap-4 mt-2">
+            <FiStar className="text-lg lg:text-xl text-yellow-300" />
+            <span className="text-white/90 text-xs lg:text-sm">Tip: You're <span className="text-[#d0ed01] font-bold">1 task</span> away from streak!</span>
           </div>
         </div>
       </div>

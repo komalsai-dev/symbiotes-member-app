@@ -154,23 +154,23 @@ export default function BillingPage() {
   });
 
   return (
-    <div className="w-full min-h-screen bg-black pt-0 px-8 pb-8">
+    <div className="w-full min-h-screen bg-black pt-0 px-4 lg:px-8 pb-8">
       {/* Pricing Slider + Header Row */}
-      <div className="mb-10">
-        <div className="flex items-center justify-between mb-2">
+      <div className="mb-8 lg:mb-10">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-2 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white">Billing & Plans</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold text-white">Billing & Plans</h1>
           </div>
           <button
-            className="bg-[#d0ed01] text-black px-5 py-2 rounded-lg font-semibold hover:bg-[#bada55] transition-colors shadow"
+            className="bg-[#d0ed01] text-black px-4 lg:px-5 py-2 rounded-lg font-semibold hover:bg-[#bada55] transition-colors shadow text-sm lg:text-base"
             onClick={() => setShowPaymentHistory(true)}
           >
             Payment History
           </button>
         </div>
-        <p className="text-gray-400 mb-4">Explore scalable pricing for your team.</p>
-        <div className="flex items-center gap-6 mb-4">
-          <span className="text-gray-400">$6k</span>
+        <p className="text-gray-400 mb-4 text-sm lg:text-base">Explore scalable pricing for your team.</p>
+        <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-6 mb-4">
+          <span className="text-gray-400 text-sm lg:text-base">$6k</span>
           <input
             type="range"
             min={6000}
@@ -178,19 +178,19 @@ export default function BillingPage() {
             step={1000}
             value={sliderValue}
             onChange={e => setSliderValue(Number(e.target.value))}
-            className="w-1/2 accent-[#d0ed01]"
+            className="w-full lg:w-1/2 accent-[#d0ed01]"
           />
-          <span className="text-gray-400">$200k</span>
-          <span className="ml-6 text-[#d0ed01] font-bold text-lg">${sliderValue.toLocaleString()}</span>
+          <span className="text-gray-400 text-sm lg:text-base">$200k</span>
+          <span className="text-[#d0ed01] font-bold text-base lg:text-lg">${sliderValue.toLocaleString()}</span>
         </div>
       </div>
 
       {/* Pricing Cards */}
-      <div className="flex flex-col md:flex-row gap-8 mb-12">
+      <div className="flex flex-col md:flex-row gap-6 lg:gap-8 mb-10 lg:mb-12">
         {plans.map((plan) => (
           <div
             key={plan.name}
-            className="flex-1 bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-xl flex flex-col"
+            className="flex-1 bg-white/10 backdrop-blur-md rounded-2xl p-6 lg:p-8 border border-white/20 shadow-xl flex flex-col"
           >
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-2xl font-bold text-white">{plan.name}</h2>

@@ -505,73 +505,80 @@ export default function BlueprintPage() {
   }
 
   return (
-    <div className="w-full p-8">
+    <div className="w-full p-4 lg:p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 lg:mb-8 gap-4">
         <div className="flex items-center gap-3">
-          <FiBook className="text-3xl text-[#d0ed01]" />
-          <h1 className="text-3xl font-bold text-white">Blueprint Hub</h1>
+          <FiBook className="text-2xl lg:text-3xl text-[#d0ed01]" />
+          <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">Blueprint Hub</h1>
         </div>
         <button 
-          className="px-4 py-2 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#b6d000] transition flex items-center gap-2"
+          className="px-4 py-2 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#b6d000] transition flex items-center gap-2 w-full lg:w-auto justify-center"
           onClick={() => setShowCreateModal(true)}
         >
-          <FiPlus className="text-lg" />
+          <FiPlus className="text-base lg:text-lg" />
           Create Blueprint
         </button>
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-4 mb-8">
+      <div className="flex flex-wrap gap-2 lg:gap-4 mb-6 lg:mb-8">
         {Object.keys(categories).map((category) => (
           <button
             key={category}
-            className={`px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 ${
+            className={`px-3 lg:px-6 py-2 rounded-lg lg:rounded-full font-semibold transition flex items-center gap-2 text-sm lg:text-base whitespace-nowrap ${
               selectedCategory === category
                 ? "bg-[#d0ed01] text-black"
                 : "bg-[#232323] text-white hover:bg-[#333]"
             }`}
             onClick={() => setSelectedCategory(category as keyof BlueprintCategory)}
           >
-            {category === "MVP Experiments" && <FiTarget className="text-lg" />}
-            {category === "A/B Tests" && <FiZap className="text-lg" />}
-            {category === "Market Research" && <FiBarChart2 className="text-lg" />}
-            {category}
+            {category === "MVP Experiments" && <FiTarget className="text-base lg:text-lg" />}
+            {category === "A/B Tests" && <FiZap className="text-base lg:text-lg" />}
+            {category === "Market Research" && <FiBarChart2 className="text-base lg:text-lg" />}
+            <span className="hidden sm:inline">{category}</span>
+            <span className="sm:hidden">
+              {category === "MVP Experiments" ? "MVP" : 
+               category === "A/B Tests" ? "A/B" : 
+               category === "Market Research" ? "Research" : category}
+            </span>
           </button>
         ))}
         <button
           key={MY_BLUEPRINTS}
-          className={`px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 ${
+          className={`px-3 lg:px-6 py-2 rounded-lg lg:rounded-full font-semibold transition flex items-center gap-2 text-sm lg:text-base whitespace-nowrap ${
             selectedCategory === MY_BLUEPRINTS
               ? "bg-[#d0ed01] text-black"
               : "bg-[#232323] text-white hover:bg-[#333]"
           }`}
           onClick={() => setSelectedCategory(MY_BLUEPRINTS)}
         >
-          <FiBook className="text-lg" />
-          {MY_BLUEPRINTS}
+          <FiBook className="text-base lg:text-lg" />
+          <span className="hidden sm:inline">{MY_BLUEPRINTS}</span>
+          <span className="sm:hidden">My BP</span>
         </button>
       </div>
 
       {/* Search and Filters */}
-      <div className="flex flex-col gap-4 mb-8">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-4 mb-6 lg:mb-8">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4">
           <div className="flex-1 flex items-center gap-2 bg-[#232323] px-4 py-2 rounded-lg">
-            <FiSearch className="text-gray-400" />
+            <FiSearch className="text-gray-400 text-base lg:text-lg" />
             <input
               type="text"
               placeholder="Search blueprints..."
-              className="bg-transparent text-white outline-none w-full"
+              className="bg-transparent text-white outline-none w-full text-sm lg:text-base"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="relative" ref={filterContainerRef}>
             <button
-                className="px-4 py-2 rounded-lg bg-[#232323] text-white hover:bg-[#333] transition"
+                className="px-4 py-2 rounded-lg bg-[#232323] text-white hover:bg-[#333] transition w-full lg:w-auto flex items-center justify-center gap-2"
                 onClick={() => setShowFilterPopover(prev => !prev)}
             >
-                <FiFilter className="text-lg" />
+                <FiFilter className="text-base lg:text-lg" />
+                <span className="text-sm lg:text-base">Filter</span>
             </button>
             {showFilterPopover && (
                 <div className="absolute top-full right-0 mt-2 w-80 bg-[#18181b] border border-white/10 rounded-lg shadow-lg z-20">

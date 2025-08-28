@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import ProductTrafficChart from './ProductTrafficChart';
 import { FaGithub, FaDiscord, FaLinkedin, FaFacebook, FaTwitter, FaGoogle } from 'react-icons/fa';
 import { MdStackedLineChart } from 'react-icons/md';
 import { 
@@ -435,86 +434,86 @@ const AuthModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-[#18181b] rounded-2xl p-8 max-w-md w-full mx-4 border border-white/10">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <integration.icon size={24} className="text-[#d6ff00]" />
-            <h3 className="text-white text-xl font-semibold">{integration.name}</h3>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-[#18181b] rounded-2xl p-6 lg:p-8 max-w-md w-full mx-4 border border-white/10">
+        <div className="flex items-center justify-between mb-4 lg:mb-6">
+          <div className="flex items-center gap-2 lg:gap-3">
+            <integration.icon size={20} className="text-[#d6ff00] lg:text-[24px]" />
+            <h3 className="text-white text-lg lg:text-xl font-semibold">{integration.name}</h3>
           </div>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
           >
-            <FiX size={24} />
+            <FiX size={20} className="lg:text-[24px]" />
           </button>
         </div>
 
-        <div className="mb-6">
-          <p className="text-gray-300 mb-4">{integration.description}</p>
+        <div className="mb-4 lg:mb-6">
+          <p className="text-gray-300 mb-3 lg:mb-4 text-sm lg:text-base">{integration.description}</p>
           
           {integration.id === 'stack' ? (
-            <div className="bg-[#232323] rounded-lg p-4 mb-4">
+            <div className="bg-[#232323] rounded-lg p-3 lg:p-4 mb-3 lg:mb-4">
               <div className="flex items-center gap-2 text-[#d6ff00] mb-2">
-                <FiCheck size={16} />
-                <span className="text-sm font-medium">Connected</span>
+                <FiCheck size={14} className="lg:text-[16px]" />
+                <span className="text-xs lg:text-sm font-medium">Connected</span>
               </div>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 text-xs lg:text-sm">
                 You're already connected. To manage your account, please visit your integration settings or reconnect via Google.
               </p>
             </div>
           ) : (
-            <div className="space-y-3 mb-4">
+            <div className="space-y-2 lg:space-y-3 mb-3 lg:mb-4">
               <div className="flex items-center gap-2 text-gray-400">
                 <span className="text-[#d6ff00]">✅</span>
-                <span className="text-sm">Secure authentication</span>
+                <span className="text-xs lg:text-sm">Secure authentication</span>
               </div>
               <div className="flex items-center gap-2 text-gray-400">
                 <span className="text-[#d6ff00]">🔄</span>
-                <span className="text-sm">Seamless integration with Symbiotes</span>
+                <span className="text-xs lg:text-sm">Seamless integration with Symbiotes</span>
               </div>
             </div>
           )}
 
           {error && (
-            <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4">
-              <p className="text-red-400 text-sm">{error}</p>
+            <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-3 lg:mb-4">
+              <p className="text-red-400 text-xs lg:text-sm">{error}</p>
             </div>
           )}
         </div>
 
         {integration.id === 'stack' ? (
-          <div className="space-y-3">
+          <div className="space-y-2 lg:space-y-3">
             <button
               onClick={handleGoogleAuth}
               disabled={isConnecting}
-              className="w-full bg-[#d6ff00] text-black font-semibold py-3 px-4 rounded-lg hover:bg-[#b6d000] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-[#d6ff00] text-black font-semibold py-2 lg:py-3 px-3 lg:px-4 rounded-lg hover:bg-[#b6d000] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-sm lg:text-base"
             >
               {isConnecting ? (
-                <FiRefreshCw className="animate-spin" size={16} />
+                <FiRefreshCw className="animate-spin" size={14} className="lg:text-[16px]" />
               ) : (
-                <FaGoogle size={16} />
+                <FaGoogle size={14} className="lg:text-[16px]" />
               )}
               {isConnecting ? 'Connecting...' : 'Continue with Google'}
             </button>
             <button
               onClick={onClose}
-              className="w-full bg-[#232323] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#333] transition-colors"
+              className="w-full bg-[#232323] text-white font-semibold py-2 lg:py-3 px-3 lg:px-4 rounded-lg hover:bg-[#333] transition-colors text-sm lg:text-base"
             >
               Cancel
             </button>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2 lg:space-y-3">
             <button
               onClick={handleGoogleAuth}
               disabled={isConnecting}
-              className="w-full bg-[#d6ff00] text-black font-semibold py-3 px-4 rounded-lg hover:bg-[#b6d000] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-[#d6ff00] text-black font-semibold py-2 lg:py-3 px-3 lg:px-4 rounded-lg hover:bg-[#b6d000] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-sm lg:text-base"
             >
               {isConnecting ? (
-                <FiRefreshCw className="animate-spin" size={16} />
+                <FiRefreshCw className="animate-spin" size={14} className="lg:text-[16px]" />
               ) : (
-                <FaGoogle size={16} />
+                <FaGoogle size={14} className="lg:text-[16px]" />
               )}
               {isConnecting ? 'Connecting...' : 'Continue with Google'}
             </button>
@@ -522,12 +521,12 @@ const AuthModal = ({
             <button
               onClick={handleSymbiotesAuth}
               disabled={isConnecting}
-              className="w-full bg-[#232323] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#333] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 border border-white/10"
+              className="w-full bg-[#232323] text-white font-semibold py-2 lg:py-3 px-3 lg:px-4 rounded-lg hover:bg-[#333] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 border border-white/10 text-sm lg:text-base"
             >
               {isConnecting ? (
-                <FiRefreshCw className="animate-spin" size={16} />
+                <FiRefreshCw className="animate-spin" size={14} className="lg:text-[16px]" />
               ) : (
-                <div className="w-4 h-4 bg-[#d6ff00] rounded-sm"></div>
+                <div className="w-3 h-3 lg:w-4 lg:h-4 bg-[#d6ff00] rounded-sm"></div>
               )}
               {isConnecting ? 'Connecting...' : 'Continue with Symbiotes Account'}
             </button>
@@ -535,19 +534,19 @@ const AuthModal = ({
             <button
               onClick={handlePlatformAuth}
               disabled={isConnecting}
-              className="w-full bg-[#232323] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#333] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 border border-white/10"
+              className="w-full bg-[#232323] text-white font-semibold py-2 lg:py-3 px-3 lg:px-4 rounded-lg hover:bg-[#333] transition-colors disabled:opacity-50 flex items-center justify-center gap-2 border border-white/10 text-sm lg:text-base"
             >
               {isConnecting ? (
-                <FiRefreshCw className="animate-spin" size={16} />
+                <FiRefreshCw className="animate-spin" size={14} className="lg:text-[16px]" />
               ) : (
-                <integration.icon size={16} />
+                <integration.icon size={14} className="lg:text-[16px]" />
               )}
               {isConnecting ? 'Connecting...' : `Continue with ${integration.name}`}
             </button>
             
             <button
               onClick={onClose}
-              className="w-full bg-transparent text-gray-400 font-semibold py-3 px-4 rounded-lg hover:text-white transition-colors"
+              className="w-full bg-transparent text-gray-400 font-semibold py-2 lg:py-3 px-3 lg:px-4 rounded-lg hover:text-white transition-colors text-sm lg:text-base"
             >
               Cancel
             </button>
@@ -594,20 +593,20 @@ const IntegrationCard = ({
   };
 
   return (
-    <div className="bg-[#232323] rounded-2xl p-6 border border-white/10 hover:border-[#d6ff00]/30 transition-all duration-200">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
+    <div className="bg-[#232323] rounded-2xl p-4 lg:p-6 border border-white/10 hover:border-[#d6ff00]/30 transition-all duration-200">
+      <div className="flex items-start justify-between mb-3 lg:mb-4">
+        <div className="flex items-center gap-2 lg:gap-3">
           <div className="p-2 bg-[#18181b] rounded-lg">
-            <integration.icon size={24} className="text-[#d6ff00]" />
+            <integration.icon size={20} className="text-[#d6ff00] lg:text-[24px]" />
           </div>
-          <div>
-            <h3 className="text-white font-semibold text-lg">{integration.name}</h3>
-            <p className="text-gray-400 text-sm">{integration.description}</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-white font-semibold text-base lg:text-lg">{integration.name}</h3>
+            <p className="text-gray-400 text-xs lg:text-sm">{integration.description}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           {getStatusIcon(integration.status)}
-          <span className={`text-sm font-medium ${getStatusColor(integration.status)}`}>
+          <span className={`text-xs lg:text-sm font-medium ${getStatusColor(integration.status)}`}>
             {integration.status === 'connected' ? 'Connected' : 
              integration.status === 'connecting' ? 'Connecting...' :
              integration.status === 'error' ? 'Error' : 'Disconnected'}
@@ -616,13 +615,13 @@ const IntegrationCard = ({
       </div>
 
       {integration.accountInfo && (
-        <div className="bg-[#18181b] rounded-lg p-3 mb-4">
-          <div className="flex items-center gap-2 text-sm">
+        <div className="bg-[#18181b] rounded-lg p-3 mb-3 lg:mb-4">
+          <div className="flex items-center gap-2 text-xs lg:text-sm">
             <span className="text-gray-400">Account:</span>
             <span className="text-white">{integration.accountInfo.username}</span>
           </div>
           {integration.lastSync && (
-            <div className="flex items-center gap-2 text-sm mt-1">
+            <div className="flex items-center gap-2 text-xs lg:text-sm mt-1">
               <span className="text-gray-400">Last sync:</span>
               <span className="text-white">{integration.lastSync}</span>
             </div>
@@ -630,8 +629,8 @@ const IntegrationCard = ({
         </div>
       )}
 
-      <div className="mb-4">
-        <h4 className="text-white font-medium mb-2">Features:</h4>
+      <div className="mb-3 lg:mb-4">
+        <h4 className="text-white font-medium mb-2 text-sm lg:text-base">Features:</h4>
         <div className="flex flex-wrap gap-1">
           {integration.features.map((feature, idx) => (
             <span
@@ -649,24 +648,25 @@ const IntegrationCard = ({
           <>
             <button 
               onClick={() => onManage(integration)}
-              className="flex-1 bg-[#d6ff00] text-black font-semibold py-2 px-4 rounded-lg hover:bg-[#b6d000] transition-colors flex items-center justify-center gap-2"
+              className="flex-1 bg-[#d6ff00] text-black font-semibold py-2 px-3 lg:px-4 rounded-lg hover:bg-[#b6d000] transition-colors flex items-center justify-center gap-2 text-sm lg:text-base"
               title="Manage integration settings"
             >
-              <FiMoreVertical size={16} />
-              Manage
+              <FiMoreVertical size={14} className="lg:text-[16px]" />
+              <span className="hidden sm:inline">Manage</span>
+              <span className="sm:hidden">Manage</span>
             </button>
             <button 
               onClick={handleExternalLink}
-              className="bg-[#232323] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#333] transition-colors border border-white/10"
+              className="bg-[#232323] text-white font-semibold py-2 px-3 lg:px-4 rounded-lg hover:bg-[#333] transition-colors border border-white/10"
               title={`Go to ${integration.name}`}
             >
-              <FiExternalLink size={16} />
+              <FiExternalLink size={14} className="lg:text-[16px]" />
             </button>
           </>
         ) : (
           <button
             onClick={() => onConnect(integration)}
-            className="w-full bg-[#d6ff00] text-black font-semibold py-2 px-4 rounded-lg hover:bg-[#b6d000] transition-colors"
+            className="w-full bg-[#d6ff00] text-black font-semibold py-2 px-3 lg:px-4 rounded-lg hover:bg-[#b6d000] transition-colors text-sm lg:text-base"
           >
             Connect
           </button>
@@ -890,16 +890,16 @@ const IntegrationsPage = () => {
   };
 
   return (
-    <div className="w-full max-w-[1800px] mx-auto px-0">
+    <div className="w-full max-w-[1800px] mx-auto px-4 lg:px-0">
       {/* Notification Banner */}
       {notification && (
-        <div className={`mb-6 p-4 rounded-lg border ${
+        <div className={`mb-4 lg:mb-6 p-3 lg:p-4 rounded-lg border ${
           notification.type === 'success' 
             ? 'bg-green-500/20 border-green-500/30 text-green-400' 
             : 'bg-red-500/20 border-red-500/30 text-red-400'
         }`}>
           <div className="flex items-center justify-between">
-            <span>{notification.message}</span>
+            <span className="text-sm lg:text-base">{notification.message}</span>
               <button
               onClick={() => setNotification(null)}
               className="text-gray-400 hover:text-white"
@@ -910,27 +910,25 @@ const IntegrationsPage = () => {
             </div>
       )}
 
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-white text-3xl font-bold">Integrations</h2>
-        <div className="flex items-center gap-2 text-gray-400 text-sm">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 lg:mb-8 gap-4">
+        <h2 className="text-white text-2xl lg:text-3xl font-bold">Integrations</h2>
+        <div className="flex items-center gap-2 text-gray-400 text-xs lg:text-sm">
           <span>Connected: {integrationsList.filter(i => i.status === 'connected').length}</span>
           <span>•</span>
           <span>Total: {integrationsList.length}</span>
             </div>
           </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-10">
-        {integrationsList.map((integration) => (
-          <IntegrationCard
-            key={integration.id}
-            integration={integration}
-            onConnect={handleConnect}
-            onManage={handleManage}
-          />
-        ))}
-      </div>
-
-      <ProductTrafficChart />
+             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-10">
+         {integrationsList.map((integration) => (
+           <IntegrationCard
+             key={integration.id}
+             integration={integration}
+             onConnect={handleConnect}
+             onManage={handleManage}
+           />
+         ))}
+       </div>
 
       {selectedIntegration && (
         <>

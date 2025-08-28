@@ -185,90 +185,93 @@ export default function CrewPage() {
   };
 
   return (
-    <div className="w-full p-8">
+    <div className="w-full p-4 lg:p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-3">
-          <FiUsers className="text-3xl text-[#d0ed01]" />
-          <h1 className="text-3xl font-bold text-white">Crew</h1>
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 lg:mb-8 gap-4">
+        <div className="flex items-center gap-2 lg:gap-3">
+          <FiUsers className="text-2xl lg:text-3xl text-[#d0ed01]" />
+          <h1 className="text-2xl lg:text-3xl font-bold text-white">Crew</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <button className="bg-[#d0ed01] text-black px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#bada55] transition-colors">
-            <FiUserPlus />
-            Add Crew Member
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 lg:gap-4">
+          <button className="bg-[#d0ed01] text-black px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#bada55] transition-colors text-sm lg:text-base">
+            <FiUserPlus className="text-sm lg:text-base" />
+            <span className="hidden sm:inline">Add Crew Member</span>
+            <span className="sm:hidden">Add Member</span>
           </button>
-          <button className="bg-[#d0ed01] text-black px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#bada55] transition-colors">
-            <FiSettings />
-            Define New Role
+          <button className="bg-[#d0ed01] text-black px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#bada55] transition-colors text-sm lg:text-base">
+            <FiSettings className="text-sm lg:text-base" />
+            <span className="hidden sm:inline">Define New Role</span>
+            <span className="sm:hidden">New Role</span>
           </button>
-          <button className="bg-[#d0ed01] text-black px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#bada55] transition-colors">
-            <FiMail />
-            Invite Collaborator
+          <button className="bg-[#d0ed01] text-black px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#bada55] transition-colors text-sm lg:text-base">
+            <FiMail className="text-sm lg:text-base" />
+            <span className="hidden sm:inline">Invite Collaborator</span>
+            <span className="sm:hidden">Invite</span>
           </button>
         </div>
       </div>
 
       {/* Search and Filter */}
-      <div className="flex items-center gap-4 mb-8">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4 mb-6 lg:mb-8">
         <div className="flex-1 relative">
-          <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <FiSearch className="absolute left-3 lg:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm lg:text-base" />
           <input
             type="text"
             placeholder="Search crew members by name, role, or tag..."
-            className="w-full bg-[#232323] text-white pl-12 pr-4 py-3 rounded-lg outline-none border border-white/10 focus:border-[#d0ed01] transition-colors"
+            className="w-full bg-[#232323] text-white pl-10 lg:pl-12 pr-4 py-2 lg:py-3 rounded-lg outline-none border border-white/10 focus:border-[#d0ed01] transition-colors text-sm lg:text-base"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <button className="bg-[#232323] text-white px-4 py-3 rounded-lg flex items-center gap-2 hover:bg-[#333] transition-colors">
-          <FiFilter />
+        <button className="bg-[#232323] text-white px-3 lg:px-4 py-2 lg:py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-[#333] transition-colors text-sm lg:text-base">
+          <FiFilter className="text-sm lg:text-base" />
           Filter
         </button>
       </div>
 
       {/* Crew Members Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         {crewMembers.map((member) => (
           <div
             key={member.id}
-            className="bg-[#18181b] rounded-xl p-6 border border-white/10 hover:border-[#d0ed01]/30 transition-all duration-300"
+            className="bg-[#18181b] rounded-xl p-4 lg:p-6 border border-white/10 hover:border-[#d0ed01]/30 transition-all duration-300"
           >
-            <div className="flex items-start gap-4 mb-4">
+            <div className="flex items-start gap-3 lg:gap-4 mb-3 lg:mb-4">
               <img
                 src={member.image}
                 alt={member.name}
-                className="w-16 h-16 rounded-full object-cover"
+                className="w-12 h-12 lg:w-16 lg:h-16 rounded-full object-cover flex-shrink-0"
               />
-              <div>
-                <h3 className="text-lg font-semibold text-white">{member.name}</h3>
-                <p className="text-[#d0ed01]">{member.role}</p>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base lg:text-lg font-semibold text-white truncate">{member.name}</h3>
+                <p className="text-[#d0ed01] text-sm lg:text-base truncate">{member.role}</p>
               </div>
             </div>
 
             {/* Task Status */}
-            <div className="flex items-center gap-4 mb-4">
-              <div className="flex items-center gap-2">
-                <FiClock className="text-gray-400" />
-                <span className="text-gray-400">{member.taskStatus.pending} Pending</span>
+            <div className="flex items-center gap-3 lg:gap-4 mb-3 lg:mb-4">
+              <div className="flex items-center gap-1 lg:gap-2">
+                <FiClock className="text-gray-400 text-sm lg:text-base" />
+                <span className="text-gray-400 text-xs lg:text-sm">{member.taskStatus.pending} Pending</span>
               </div>
-              <div className="flex items-center gap-2">
-                <FiCheckCircle className="text-[#d0ed01]" />
-                <span className="text-gray-400">{member.taskStatus.completed} Completed</span>
+              <div className="flex items-center gap-1 lg:gap-2">
+                <FiCheckCircle className="text-[#d0ed01] text-sm lg:text-base" />
+                <span className="text-gray-400 text-xs lg:text-sm">{member.taskStatus.completed} Completed</span>
               </div>
             </div>
 
             {/* Assigned Blueprints */}
-            <div className="mb-4">
-              <h4 className="text-sm font-semibold text-white mb-2">Assigned Blueprints</h4>
-              <div className="space-y-2">
+            <div className="mb-3 lg:mb-4">
+              <h4 className="text-xs lg:text-sm font-semibold text-white mb-2">Assigned Blueprints</h4>
+              <div className="space-y-1 lg:space-y-2">
                 {member.assignedBlueprints.map((blueprint) => (
                   <div
                     key={blueprint.name}
                     className="flex items-center justify-between bg-[#232323] rounded-lg p-2"
                   >
-                    <span className="text-gray-400 text-sm">{blueprint.name}</span>
+                    <span className="text-gray-400 text-xs lg:text-sm truncate">{blueprint.name}</span>
                     <span
-                      className={`text-xs px-2 py-1 rounded-full ${
+                      className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${
                         blueprint.status === "completed"
                           ? "bg-green-500/20 text-green-500"
                           : "bg-yellow-500/20 text-yellow-500"
@@ -282,7 +285,7 @@ export default function CrewPage() {
             </div>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-1 lg:gap-2 mb-3 lg:mb-4">
               {member.tags.map((tag) => (
                 <span
                   key={tag}
@@ -295,7 +298,7 @@ export default function CrewPage() {
 
             <button
               onClick={() => handleRoleClick(member)}
-              className="w-full bg-[#232323] text-white py-2 rounded-lg hover:bg-[#333] transition-colors"
+              className="w-full bg-[#232323] text-white py-2 rounded-lg hover:bg-[#333] transition-colors text-sm lg:text-base"
             >
               Manage Role
             </button>

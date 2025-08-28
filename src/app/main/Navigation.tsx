@@ -25,19 +25,29 @@ const navItems = [
   { label: "Help Center", icon: FiHeadphones, href: "/main/help-center", priority: "low" },
 ];
 
-export default function Navigation() {
+interface NavigationProps {
+  onClose?: () => void;
+}
+
+export default function Navigation({ onClose }: NavigationProps) {
   const pathname = usePathname();
   const isProfileActive = pathname && pathname.startsWith('/profile');
 
+  const handleNavClick = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <aside className="w-64 flex flex-col justify-between bg-[#18181b] border-r border-white/10 h-screen p-6">
+    <aside className="w-64 lg:w-64 flex flex-col justify-between bg-[#18181b] border-r border-white/10 h-screen p-4 lg:p-6 overflow-y-auto">
       <div>
-        <div className="flex items-center gap-3 mb-10">
-          <Image src="/images/logo1.png" alt="Logo" width={40} height={40} priority />
-          <span className="text-2xl font-bold text-white">Symbiotes</span>
+        <div className="flex items-center gap-3 mb-8 lg:mb-10">
+          <Image src="/images/logo1.png" alt="Logo" width={32} height={32} className="lg:w-10 lg:h-10" priority />
+          <span className="text-xl lg:text-2xl font-bold text-white">Symbiotes</span>
         </div>
         <nav>
-          <ul className="space-y-2">
+          <ul className="space-y-1 lg:space-y-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               const bgClass = isActive ? "bg-[#d0ed01]" : "hover:bg-[#d0ed01] hover:text-black";
@@ -46,12 +56,13 @@ export default function Navigation() {
                 <li key={item.label} className="relative">
                   <Link
                     href={item.href}
-                    className={`flex items-center justify-between px-4 py-2 rounded-lg transition-all duration-150 font-semibold ${bgClass} ${textClass}`}
+                    onClick={handleNavClick}
+                    className={`flex items-center justify-between px-3 lg:px-4 py-2 lg:py-2 rounded-lg transition-all duration-150 font-semibold text-sm lg:text-base ${bgClass} ${textClass}`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 lg:gap-3">
                       <item.icon 
-                        size={20} 
-                        className={isActive ? "text-black" : "text-inherit"} 
+                        size={18} 
+                        className={`lg:w-5 lg:h-5 ${isActive ? "text-black" : "text-inherit"}`}
                       />
                       <span className={isActive ? "text-black" : ""}>
                         {item.label}
@@ -66,12 +77,13 @@ export default function Navigation() {
       </div>
       <Link 
         href="/profile"
-        className={`flex items-center gap-3 cursor-pointer rounded-lg px-4 py-2 transition-all duration-150 font-semibold ${isProfileActive ? 'bg-[#d0ed01] text-black' : 'hover:bg-[#232323] text-white'}`}
+        onClick={handleNavClick}
+        className={`flex items-center gap-2 lg:gap-3 cursor-pointer rounded-lg px-3 lg:px-4 py-2 transition-all duration-150 font-semibold ${isProfileActive ? 'bg-[#d0ed01] text-black' : 'hover:bg-[#232323] text-white'}`}
       >
-        <FaRegCircleUser className={`text-3xl ${isProfileActive ? 'text-black' : 'text-white'}`} />
+        <FaRegCircleUser className={`text-2xl lg:text-3xl ${isProfileActive ? 'text-black' : 'text-white'}`} />
         <div>
-          <div className={isProfileActive ? 'font-semibold text-black' : 'font-semibold'}>Profile</div>
-          <div className={isProfileActive ? 'text-xs text-black' : 'text-xs text-gray-400'}>Admin</div>
+          <div className={`text-sm lg:text-base ${isProfileActive ? 'font-semibold text-black' : 'font-semibold'}`}>Profile</div>
+          <div className={`text-xs ${isProfileActive ? 'text-black' : 'text-gray-400'}`}>Admin</div>
         </div>
       </Link>
     </aside>

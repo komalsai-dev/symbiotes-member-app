@@ -420,177 +420,177 @@ export default function LaunchpadPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-black p-8">
+    <div className="w-full min-h-screen bg-black p-4 lg:p-8">
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-[#232a13] to-[#18181b] rounded-2xl p-6 shadow-lg flex flex-col justify-between relative border border-[#d0ed01]/10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-6 lg:mb-8">
+        <div className="bg-gradient-to-br from-[#232a13] to-[#18181b] rounded-2xl p-4 lg:p-6 shadow-lg flex flex-col justify-between relative border border-[#d0ed01]/10">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-white font-semibold text-lg">Active Projects</span>
-            <span className="bg-[#232323] p-2 rounded-full"><FaRocket className="text-[#d0ed01] text-xl" /></span>
+            <span className="text-white font-semibold text-base lg:text-lg">Active Projects</span>
+            <span className="bg-[#232323] p-2 rounded-full"><FaRocket className="text-[#d0ed01] text-lg lg:text-xl" /></span>
           </div>
           <div className="flex items-end gap-2 mb-2">
-            <span className="text-4xl font-extrabold text-[#d0ed01]">12</span>
-            <span className="text-green-400 font-bold">↗ +2</span>
+            <span className="text-3xl lg:text-4xl font-extrabold text-[#d0ed01]">12</span>
+            <span className="text-green-400 font-bold text-sm lg:text-base">↗ +2</span>
           </div>
           <div className="flex gap-1 mb-4">
             {[...Array(6)].map((_, i) => (
-              <span key={i} className="inline-block w-3 h-6 rounded-full bg-[#d0ed01] opacity-80" style={{ opacity: 0.5 + i * 0.1 }}></span>
+              <span key={i} className="inline-block w-2 lg:w-3 h-4 lg:h-6 rounded-full bg-[#d0ed01] opacity-80" style={{ opacity: 0.5 + i * 0.1 }}></span>
             ))}
           </div>
-          <button className="mt-auto bg-transparent border border-[#d0ed01] text-[#d0ed01] px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#d0ed01] hover:text-black transition-colors">View All <span className="ml-1">↗</span></button>
+          <button className="mt-auto bg-transparent border border-[#d0ed01] text-[#d0ed01] px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#d0ed01] hover:text-black transition-colors text-sm lg:text-base">View All <span className="ml-1">↗</span></button>
         </div>
-        <div className="bg-gradient-to-br from-[#232a13] to-[#18181b] rounded-2xl p-6 shadow-lg flex flex-col justify-between relative border border-[#d0ed01]/10">
+        <div className="bg-gradient-to-br from-[#232a13] to-[#18181b] rounded-2xl p-4 lg:p-6 shadow-lg flex flex-col justify-between relative border border-[#d0ed01]/10">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-white font-semibold text-lg">Organizations Created</span>
-            <span className="bg-[#232323] p-2 rounded-full"><FiUsers className="text-[#d0ed01] text-xl" /></span>
+            <span className="text-white font-semibold text-base lg:text-lg">Organizations Created</span>
+            <span className="bg-[#232323] p-2 rounded-full"><FiUsers className="text-[#d0ed01] text-lg lg:text-xl" /></span>
           </div>
           <div className="flex items-end gap-2 mb-2">
-            <span className="text-4xl font-extrabold text-[#d0ed01]">5</span>
-            <span className="text-green-400 font-bold">↗ +1</span>
+            <span className="text-3xl lg:text-4xl font-extrabold text-[#d0ed01]">5</span>
+            <span className="text-green-400 font-bold text-sm lg:text-base">↗ +1</span>
       </div>
           <div className="flex gap-1 mb-4">
             {[...Array(6)].map((_, i) => (
-              <span key={i} className="inline-block w-3 h-6 rounded-full bg-[#d0ed01] opacity-80" style={{ opacity: 0.5 + i * 0.1 }}></span>
+              <span key={i} className="inline-block w-2 lg:w-3 h-4 lg:h-6 rounded-full bg-[#d0ed01] opacity-80" style={{ opacity: 0.5 + i * 0.1 }}></span>
             ))}
           </div>
-          <button className="mt-auto bg-transparent border border-[#d0ed01] text-[#d0ed01] px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#d0ed01] hover:text-black transition-colors">Create <span className="ml-1">↗</span></button>
+          <button className="mt-auto bg-transparent border border-[#d0ed01] text-[#d0ed01] px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#d0ed01] hover:text-black transition-colors text-sm lg:text-base">Create <span className="ml-1">↗</span></button>
         </div>
-        <div className="bg-gradient-to-br from-[#232a13] to-[#18181b] rounded-2xl p-6 shadow-lg flex flex-col justify-between relative border border-[#d0ed01]/10">
+        <div className="bg-gradient-to-br from-[#232a13] to-[#18181b] rounded-2xl p-4 lg:p-6 shadow-lg flex flex-col justify-between relative border border-[#d0ed01]/10">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-white font-semibold text-lg">Tasks in Progress</span>
-            <span className="bg-[#232323] p-2 rounded-full"><FiCheckSquare className="text-[#d0ed01] text-xl" /></span>
+            <span className="text-white font-semibold text-base lg:text-lg">Tasks in Progress</span>
+            <span className="bg-[#232323] p-2 rounded-full"><FiCheckSquare className="text-[#d0ed01] text-lg lg:text-xl" /></span>
           </div>
           <div className="flex items-end gap-2 mb-2">
-            <span className="text-4xl font-extrabold text-[#d0ed01]">34</span>
+            <span className="text-3xl lg:text-4xl font-extrabold text-[#d0ed01]">34</span>
           </div>
           <div className="flex gap-1 mb-4">
             {[...Array(6)].map((_, i) => (
-              <span key={i} className="inline-block w-3 h-6 rounded-full bg-[#d0ed01] opacity-80" style={{ opacity: 0.5 + i * 0.1 }}></span>
+              <span key={i} className="inline-block w-2 lg:w-3 h-4 lg:h-6 rounded-full bg-[#d0ed01] opacity-80" style={{ opacity: 0.5 + i * 0.1 }}></span>
             ))}
           </div>
-          <button className="mt-auto bg-transparent border border-[#d0ed01] text-[#d0ed01] px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#d0ed01] hover:text-black transition-colors">View All <span className="ml-1">↗</span></button>
+          <button className="mt-auto bg-transparent border border-[#d0ed01] text-[#d0ed01] px-3 lg:px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#d0ed01] hover:text-black transition-colors text-sm lg:text-base">View All <span className="ml-1">↗</span></button>
           </div>
         </div>
 
       {/* Blueprint Progress */}
-      <div className="bg-[#18181b] rounded-2xl p-6 mb-8 shadow-lg border border-black/30">
-        <div className="flex items-center gap-2 mb-6">
-          <FiBookOpen className="text-[#d0ed01] text-2xl" />
-          <span className="text-white font-bold text-lg">Blueprint Progress</span>
+      <div className="bg-[#18181b] rounded-2xl p-4 lg:p-6 mb-6 lg:mb-8 shadow-lg border border-black/30">
+        <div className="flex items-center gap-2 mb-4 lg:mb-6">
+          <FiBookOpen className="text-[#d0ed01] text-xl lg:text-2xl" />
+          <span className="text-white font-bold text-base lg:text-lg">Blueprint Progress</span>
         </div>
-        <div className="flex items-center gap-6 justify-between">
-          <div className="flex items-center gap-6">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-6 justify-between">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-6 w-full lg:w-auto">
             {/* Step 1 */}
             <div className="flex items-center gap-2">
-              <span className="w-9 h-9 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold text-lg border-2 border-[#d0ed01]">1</span>
-              <span className="text-[#d0ed01] font-semibold text-lg">Idea</span>
+              <span className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold text-base lg:text-lg border-2 border-[#d0ed01]">1</span>
+              <span className="text-[#d0ed01] font-semibold text-sm lg:text-lg">Idea</span>
             </div>
-            <span className="w-10 h-1 rounded-full bg-[#d0ed01] opacity-60"></span>
+            <span className="hidden lg:block w-10 h-1 rounded-full bg-[#d0ed01] opacity-60"></span>
             {/* Step 2 */}
             <div className="flex items-center gap-2">
-              <span className="w-9 h-9 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold text-lg border-2 border-[#d0ed01]">2</span>
-              <span className="text-[#d0ed01] font-semibold text-lg">In Review</span>
+              <span className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold text-base lg:text-lg border-2 border-[#d0ed01]">2</span>
+              <span className="text-[#d0ed01] font-semibold text-sm lg:text-lg">In Review</span>
             </div>
-            <span className="w-10 h-1 rounded-full bg-[#d0ed01] opacity-60"></span>
+            <span className="hidden lg:block w-10 h-1 rounded-full bg-[#d0ed01] opacity-60"></span>
             {/* Step 3 */}
             <div className="flex items-center gap-2">
-              <span className="w-9 h-9 rounded-full bg-[#a3c701] flex items-center justify-center text-black font-bold text-lg border-2 border-[#a3c701]">3</span>
-              <span className="text-[#a3c701] font-semibold text-lg">Execution</span>
+              <span className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-[#a3c701] flex items-center justify-center text-black font-bold text-base lg:text-lg border-2 border-[#a3c701]">3</span>
+              <span className="text-[#a3c701] font-semibold text-sm lg:text-lg">Execution</span>
             </div>
-            <span className="w-10 h-1 rounded-full bg-[#d0ed01] opacity-30"></span>
+            <span className="hidden lg:block w-10 h-1 rounded-full bg-[#d0ed01] opacity-30"></span>
             {/* Step 4 */}
             <div className="flex items-center gap-2">
-              <span className="w-9 h-9 rounded-full bg-[#232323] flex items-center justify-center text-white font-bold text-lg border-2 border-[#232323]">4</span>
-              <span className="text-gray-300 font-semibold text-lg">Completed</span>
+              <span className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-[#232323] flex items-center justify-center text-white font-bold text-base lg:text-lg border-2 border-[#232323]">4</span>
+              <span className="text-gray-300 font-semibold text-sm lg:text-lg">Completed</span>
             </div>
           </div>
-          <button className="bg-[#d0ed01] text-black px-6 py-2 rounded-lg font-bold hover:bg-[#bada55] transition">Start New Blueprint</button>
+          <button className="bg-[#d0ed01] text-black px-4 lg:px-6 py-2 rounded-lg font-bold hover:bg-[#bada55] transition text-sm lg:text-base w-full lg:w-auto">Start New Blueprint</button>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="flex flex-wrap gap-4 mb-8">
-        <button className="bg-[#232323] text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition"><FiPlus /> Create Organization</button>
-        <button className="bg-[#232323] text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition"><FiBookOpen /> Launch Blueprint</button>
-        <button className="bg-[#232323] text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition"><FiUserPlus /> Invite Team</button>
-        <button className="bg-[#232323] text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition"><FiCheckSquare /> Add Task</button>
+      <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-3 lg:gap-4 mb-6 lg:mb-8">
+        <button className="bg-[#232323] text-white px-4 lg:px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition text-sm lg:text-base justify-center"><FiPlus className="text-base lg:text-lg" /> <span className="hidden sm:inline">Create Organization</span><span className="sm:hidden">Create Org</span></button>
+        <button className="bg-[#232323] text-white px-4 lg:px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition text-sm lg:text-base justify-center"><FiBookOpen className="text-base lg:text-lg" /> <span className="hidden sm:inline">Launch Blueprint</span><span className="sm:hidden">Launch BP</span></button>
+        <button className="bg-[#232323] text-white px-4 lg:px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition text-sm lg:text-base justify-center"><FiUserPlus className="text-base lg:text-lg" /> <span className="hidden sm:inline">Invite Team</span><span className="sm:hidden">Invite</span></button>
+        <button className="bg-[#232323] text-white px-4 lg:px-6 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#333] transition text-sm lg:text-base justify-center"><FiCheckSquare className="text-base lg:text-lg" /> <span className="hidden sm:inline">Add Task</span><span className="sm:hidden">Add Task</span></button>
       </div>
 
       {/* Activity Feed & Community Highlights */}
-      <div className="flex flex-col lg:flex-row gap-8 mb-8">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-6 lg:mb-8">
         {/* Activity Feed (reduced width) */}
-        <div className="bg-[#18181b] rounded-2xl p-6 flex-1 max-w-2xl shadow-lg">
-          <div className="text-white font-bold text-lg mb-4 flex items-center gap-2"><FiActivity className="text-[#d0ed01]" /> Activity Feed</div>
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-4">
-              <span className="w-10 h-10 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold">SA</span>
-              <div>
-                <div className="text-white font-semibold">Sara Ali <span className="text-gray-400 font-normal">created a new project</span></div>
+        <div className="bg-[#18181b] rounded-2xl p-4 lg:p-6 flex-1 max-w-2xl shadow-lg">
+          <div className="text-white font-bold text-base lg:text-lg mb-4 flex items-center gap-2"><FiActivity className="text-[#d0ed01]" /> Activity Feed</div>
+          <div className="flex flex-col gap-3 lg:gap-4">
+            <div className="flex items-center gap-3 lg:gap-4">
+              <span className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold text-sm lg:text-base">SA</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-white font-semibold text-sm lg:text-base">Sara Ali <span className="text-gray-400 font-normal">created a new project</span></div>
                 <div className="text-xs text-gray-400">2m ago</div>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="w-10 h-10 rounded-full bg-[#38bdf8] flex items-center justify-center text-black font-bold">JC</span>
-              <div>
-                <div className="text-white font-semibold">Jane Cooper <span className="text-gray-400 font-normal">moved Blueprint to Execution</span></div>
+            <div className="flex items-center gap-3 lg:gap-4">
+              <span className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#38bdf8] flex items-center justify-center text-black font-bold text-sm lg:text-base">JC</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-white font-semibold text-sm lg:text-base">Jane Cooper <span className="text-gray-400 font-normal">moved Blueprint to Execution</span></div>
                 <div className="text-xs text-gray-400">10m ago</div>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="w-10 h-10 rounded-full bg-[#f472b6] flex items-center justify-center text-black font-bold">RR</span>
-              <div>
-                <div className="text-white font-semibold">Ronald Richards <span className="text-gray-400 font-normal">invited a new member</span></div>
+            <div className="flex items-center gap-3 lg:gap-4">
+              <span className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#f472b6] flex items-center justify-center text-black font-bold text-sm lg:text-base">RR</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-white font-semibold text-sm lg:text-base">Ronald Richards <span className="text-gray-400 font-normal">invited a new member</span></div>
                 <div className="text-xs text-gray-400">1h ago</div>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="w-10 h-10 rounded-full bg-[#a3c701] flex items-center justify-center text-black font-bold">GH</span>
-              <div>
-                <div className="text-white font-semibold">Guy Hawkins <span className="text-gray-400 font-normal">completed a task</span></div>
+            <div className="flex items-center gap-3 lg:gap-4">
+              <span className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#a3c701] flex items-center justify-center text-black font-bold text-sm lg:text-base">GH</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-white font-semibold text-sm lg:text-base">Guy Hawkins <span className="text-gray-400 font-normal">completed a task</span></div>
                 <div className="text-xs text-gray-400">2h ago</div>
               </div>
             </div>
           </div>
         </div>
         {/* Community Highlights */}
-        <div className="bg-[#18181b] rounded-2xl p-6 w-full max-w-xs shadow-lg flex flex-col justify-between">
+        <div className="bg-[#18181b] rounded-2xl p-4 lg:p-6 w-full lg:max-w-xs shadow-lg flex flex-col justify-between">
           <div>
-            <div className="text-white font-bold text-lg mb-4 flex items-center gap-2"><FiUsers className="text-[#d0ed01]" /> Community Highlights</div>
+            <div className="text-white font-bold text-base lg:text-lg mb-4 flex items-center gap-2"><FiUsers className="text-[#d0ed01]" /> Community Highlights</div>
             <div className="flex flex-col gap-3 mb-4">
               <div className="flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold">TI</span>
-                <div>
-                  <div className="text-white font-semibold leading-tight">Tech Innovators</div>
+                <span className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#d0ed01] flex items-center justify-center text-black font-bold text-sm lg:text-base">TI</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-white font-semibold leading-tight text-sm lg:text-base">Tech Innovators</div>
                   <div className="text-gray-400 text-xs">Org</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-[#38bdf8] flex items-center justify-center text-black font-bold">JC</span>
-                <div>
-                  <div className="text-white font-semibold leading-tight">Jane Cooper</div>
+                <span className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#38bdf8] flex items-center justify-center text-black font-bold text-sm lg:text-base">JC</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-white font-semibold leading-tight text-sm lg:text-base">Jane Cooper</div>
                   <div className="text-gray-400 text-xs">Contributor</div>
                 </div>
               </div>
             </div>
           </div>
-          <button className="w-full mt-2 py-3 rounded-lg bg-[#d0ed01] text-black font-bold hover:bg-[#bada55] transition">&nbsp;</button>
+          <button className="w-full mt-2 py-3 rounded-lg bg-[#d0ed01] text-black font-bold hover:bg-[#bada55] transition text-sm lg:text-base">&nbsp;</button>
         </div>
             </div>
 
       {/* AI Copilot Floating Panel */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <div className="bg-[#18181b] rounded-2xl shadow-2xl p-6 flex flex-col items-center gap-3 border border-[#d0ed01]/30 backdrop-blur-md min-w-[260px]">
+      <div className="fixed bottom-4 lg:bottom-8 right-4 lg:right-8 z-50">
+        <div className="bg-[#18181b] rounded-2xl shadow-2xl p-4 lg:p-6 flex flex-col items-center gap-2 lg:gap-3 border border-[#d0ed01]/30 backdrop-blur-md min-w-[240px] lg:min-w-[260px]">
           <div className="flex items-center gap-2 mb-2">
-            <FiTrendingUp className="text-[#d0ed01] text-xl animate-pulse" />
-            <span className="text-white font-bold text-lg">AI Copilot</span>
-            <button className="ml-auto text-[#d0ed01] hover:text-white"><FiMic /></button>
+            <FiTrendingUp className="text-[#d0ed01] text-lg lg:text-xl animate-pulse" />
+            <span className="text-white font-bold text-base lg:text-lg">AI Copilot</span>
+            <button className="ml-auto text-[#d0ed01] hover:text-white"><FiMic className="text-base lg:text-lg" /></button>
           </div>
-          <button className="w-full px-4 py-2 rounded-lg bg-[#232323] text-[#d0ed01] font-semibold hover:bg-[#d0ed01] hover:text-black transition-all duration-200 shadow-md mb-1">Summarize current progress</button>
+          <button className="w-full px-3 lg:px-4 py-2 rounded-lg bg-[#232323] text-[#d0ed01] font-semibold hover:bg-[#d0ed01] hover:text-black transition-all duration-200 shadow-md mb-1 text-sm lg:text-base">Summarize current progress</button>
           <button
-            className="w-full px-4 py-2 rounded-lg bg-[#232323] text-[#d0ed01] font-semibold hover:bg-[#d0ed01] hover:text-black transition-all duration-200 shadow-md mb-1"
+            className="w-full px-3 lg:px-4 py-2 rounded-lg bg-[#232323] text-[#d0ed01] font-semibold hover:bg-[#d0ed01] hover:text-black transition-all duration-200 shadow-md mb-1 text-sm lg:text-base"
             onClick={() => setShowAiChat(true)}
           >Ask Symbiote AI</button>
-          <button className="w-full px-4 py-2 rounded-lg bg-[#232323] text-[#d0ed01] font-semibold hover:bg-[#d0ed01] hover:text-black transition-all duration-200 shadow-md">Detect project risks</button>
+          <button className="w-full px-3 lg:px-4 py-2 rounded-lg bg-[#232323] text-[#d0ed01] font-semibold hover:bg-[#d0ed01] hover:text-black transition-all duration-200 shadow-md text-sm lg:text-base">Detect project risks</button>
         </div>
         {/* AI Chatbot Panel */}
         {showAiChat && (
@@ -599,19 +599,19 @@ export default function LaunchpadPage() {
               className="fixed inset-0 z-40 bg-black/10"
               onClick={() => setShowAiChat(false)}
             />
-            <div className="fixed bottom-28 right-8 z-50">
-              <div className="bg-[#18181b] border border-[#d0ed01]/40 rounded-2xl shadow-2xl p-10 w-[520px] flex flex-col gap-6 backdrop-blur-md">
+            <div className="fixed bottom-20 lg:bottom-28 right-4 lg:right-8 z-50">
+              <div className="bg-[#18181b] border border-[#d0ed01]/40 rounded-2xl shadow-2xl p-6 lg:p-10 w-[calc(100vw-2rem)] lg:w-[520px] max-w-[520px] flex flex-col gap-4 lg:gap-6 backdrop-blur-md">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <FaRobot className="text-2xl text-[#d0ed01] animate-pulse" />
-                    <span className="text-white font-bold text-lg">Symbiote AI</span>
+                    <FaRobot className="text-xl lg:text-2xl text-[#d0ed01] animate-pulse" />
+                    <span className="text-white font-bold text-base lg:text-lg">Symbiote AI</span>
                   </div>
-                  <button className="text-gray-400 hover:text-white" onClick={() => setShowAiChat(false)}><FiX /></button>
+                  <button className="text-gray-400 hover:text-white" onClick={() => setShowAiChat(false)}><FiX className="text-lg lg:text-xl" /></button>
                 </div>
-                <div className="flex flex-col gap-3 max-h-[420px] overflow-y-auto bg-[#232323] rounded-xl p-6 mb-2 scrollbar-thin scrollbar-thumb-[#444] scrollbar-track-[#232323] hover:scrollbar-thumb-[#888] scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-hide">
+                <div className="flex flex-col gap-3 max-h-[300px] lg:max-h-[420px] overflow-y-auto bg-[#232323] rounded-xl p-4 lg:p-6 mb-2 scrollbar-thin scrollbar-thumb-[#444] scrollbar-track-[#232323] hover:scrollbar-thumb-[#888] scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-hide">
                   {chatMessages.map((msg, idx) => (
                     <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}> 
-                      <div className={`rounded-2xl px-4 py-2 max-w-[80%] text-sm shadow ${msg.sender === 'user' ? 'bg-[#d0ed01] text-black' : 'bg-[#232323] text-[#d0ed01] border border-[#d0ed01]/20'}`}>
+                      <div className={`rounded-2xl px-3 lg:px-4 py-2 max-w-[80%] text-xs lg:text-sm shadow ${msg.sender === 'user' ? 'bg-[#d0ed01] text-black' : 'bg-[#232323] text-[#d0ed01] border border-[#d0ed01]/20'}`}>
                         {typeof msg.text === 'string' ? msg.text : msg.text}
                       </div>
                     </div>
@@ -620,14 +620,14 @@ export default function LaunchpadPage() {
                 </div>
                 <div className="flex gap-2">
                   <input
-                    className="flex-1 px-3 py-2 rounded-lg bg-[#232323] text-white placeholder-gray-400 outline-none border border-[#d0ed01]/20"
+                    className="flex-1 px-3 py-2 rounded-lg bg-[#232323] text-white placeholder-gray-400 outline-none border border-[#d0ed01]/20 text-sm lg:text-base"
                     placeholder="Type your question..."
                     value={chatInput}
                     onChange={e => setChatInput(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') handleSendChat(); }}
                   />
                   <button
-                    className="px-3 py-2 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#bada55] transition"
+                    className="px-3 py-2 rounded-lg bg-[#d0ed01] text-black font-semibold hover:bg-[#bada55] transition text-sm lg:text-base"
                     onClick={handleSendChat}
                     disabled={!chatInput.trim()}
                   >Send</button>

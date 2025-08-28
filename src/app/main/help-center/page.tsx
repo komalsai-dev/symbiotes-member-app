@@ -501,7 +501,7 @@ export default function HelpCenterPage() {
   };
 
   return (
-    <div className="relative w-full min-h-screen p-8 bg-[linear-gradient(120deg,rgba(208,237,1,0.08)_0%,rgba(24,24,27,0.98)_100%)]">
+    <div className="relative w-full min-h-screen p-4 lg:p-8 bg-[linear-gradient(120deg,rgba(208,237,1,0.08)_0%,rgba(24,24,27,0.98)_100%)]">
       {/* Floating AI Chatbot Widget with backdrop for close */}
       <>
         {!showAiChat && (
@@ -563,20 +563,20 @@ export default function HelpCenterPage() {
       </>
 
       {/* Main Help Center Content */}
-      <div className="max-w-6xl mx-auto flex flex-col gap-10">
+      <div className="max-w-6xl mx-auto flex flex-col gap-6 lg:gap-10">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-4">
-          <FiHeadphones className="text-3xl text-[#d0ed01]" />
-          <h1 className="text-3xl font-bold text-white">Help Center</h1>
+        <div className="flex items-center gap-3 lg:gap-4 mb-4">
+          <FiHeadphones className="text-2xl lg:text-3xl text-[#d0ed01]" />
+          <h1 className="text-2xl lg:text-3xl font-bold text-white">Help Center</h1>
           <span className="ml-auto text-sm text-gray-400">Light/Dark Toggle</span>
         </div>
         {/* Search Bar */}
         <div className="flex items-center gap-3 mb-6">
-          <FiSearch className="text-xl text-gray-400" />
-          <input className="flex-1 bg-[#232323] text-white px-6 py-3 rounded-xl outline-none border-none placeholder-gray-400" placeholder="Search help articles, topics, or ask Symbiote AI..." />
+          <FiSearch className="text-lg lg:text-xl text-gray-400" />
+          <input className="flex-1 bg-[#232323] text-white px-4 lg:px-6 py-2 lg:py-3 rounded-xl outline-none border-none placeholder-gray-400 text-sm lg:text-base" placeholder="Search help articles, topics, or ask Symbiote AI..." />
         </div>
         {/* Knowledge Base Categories */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-6 mb-6 lg:mb-8">
           {knowledgeBaseCategories.map((cat, i) => (
             <div key={i} className="bg-[rgba(24,24,27,0.95)] border border-white/10 rounded-2xl p-5 flex flex-col items-center gap-2 shadow-lg hover:border-[#d0ed01]/40 hover:scale-105 transition-all cursor-pointer">
               {cat.icon}

@@ -630,27 +630,27 @@ export default function LearnPage() {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   return (
-    <div className="w-full p-8">
+    <div className="w-full p-4 lg:p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-3">
-          <FiBook className="text-3xl text-[#d0ed01]" />
-          <h1 className="text-3xl font-bold text-white">Learning Hub</h1>
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 lg:mb-8 gap-4">
+        <div className="flex items-center gap-2 lg:gap-3">
+          <FiBook className="text-2xl lg:text-3xl text-[#d0ed01]" />
+          <h1 className="text-2xl lg:text-3xl font-bold text-white">Learning Hub</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-white">
-            <FiAward className="text-lg text-[#d0ed01]" />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 lg:gap-4">
+          <div className="flex items-center gap-2 text-white text-sm lg:text-base">
+            <FiAward className="text-base lg:text-lg text-[#d0ed01]" />
             <span>Level 3 Explorer</span>
           </div>
-          <div className="flex items-center gap-2 text-white">
-            <FiClock className="text-lg text-[#d0ed01]" />
+          <div className="flex items-center gap-2 text-white text-sm lg:text-base">
+            <FiClock className="text-base lg:text-lg text-[#d0ed01]" />
             <span>12h 30m Learned</span>
           </div>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex gap-4 mb-8">
+      <div className="flex flex-wrap gap-2 lg:gap-4 mb-6 lg:mb-8">
         {[
           { id: "playbooks", label: "Playbooks", icon: <FiBook /> },
           { id: "modules", label: "Micro-Learning", icon: <FiPlay /> },
@@ -659,7 +659,7 @@ export default function LearnPage() {
         ].map((tab) => (
           <button
             key={tab.id}
-            className={`px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 ${
+            className={`px-3 lg:px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 text-sm lg:text-base ${
               activeTab === tab.id
                 ? "bg-[#d0ed01] text-black"
                 : "bg-[#232323] text-white hover:bg-[#333]"
@@ -673,10 +673,10 @@ export default function LearnPage() {
       </div>
 
       {/* Content Area */}
-      <div className="space-y-8">
+      <div className="space-y-6 lg:space-y-8">
         {/* Playbooks Section */}
         {activeTab === "playbooks" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {playbooks.map((playbook) => (
               <div
                 key={playbook.id}

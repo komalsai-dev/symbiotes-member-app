@@ -411,100 +411,100 @@ export default function CommunityPage() {
   };
 
   return (
-    <div className="w-full p-8">
+    <div className="w-full p-4 lg:p-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 lg:mb-8 gap-4">
         <div className="flex items-center gap-3">
-          <FiGlobe className="text-3xl text-[#d0ed01]" />
-          <h1 className="text-3xl font-bold text-white">Community</h1>
+          <FiGlobe className="text-2xl lg:text-3xl text-[#d0ed01]" />
+          <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">Community</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <button className="bg-[#d0ed01] text-black px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#bada55] transition-colors">
-            <FiPlus />
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4 w-full lg:w-auto">
+          <button className="bg-[#d0ed01] text-black px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#bada55] transition-colors text-sm lg:text-base">
+            <FiPlus className="text-base lg:text-lg" />
             Create Organization
           </button>
-          <button className="bg-[#d0ed01] text-black px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#bada55] transition-colors">
-            <FiStar />
+          <button className="bg-[#d0ed01] text-black px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#bada55] transition-colors text-sm lg:text-base">
+            <FiStar className="text-base lg:text-lg" />
             Start New Project
           </button>
         </div>
       </div>
 
       {/* Search and Filter */}
-      <div className="flex items-center gap-4 mb-8">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 lg:gap-4 mb-6 lg:mb-8">
         <div className="flex-1 relative">
           <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             placeholder="Search people by name, role, or tag..."
-            className="w-full bg-[#232323] text-white pl-12 pr-4 py-3 rounded-lg outline-none border border-white/10 focus:border-[#d0ed01] transition-colors"
+            className="w-full bg-[#232323] text-white pl-12 pr-4 py-3 rounded-lg outline-none border border-white/10 focus:border-[#d0ed01] transition-colors text-sm lg:text-base"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <button className="bg-[#232323] text-white px-4 py-3 rounded-lg flex items-center gap-2 hover:bg-[#333] transition-colors">
-          <FiFilter />
+        <button className="bg-[#232323] text-white px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-[#333] transition-colors text-sm lg:text-base">
+          <FiFilter className="text-base lg:text-lg" />
           Filter
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4 mb-8">
+      <div className="flex flex-wrap gap-2 lg:gap-4 mb-6 lg:mb-8">
         <button
-          className={`px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 ${
+          className={`px-4 lg:px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 text-sm lg:text-base ${
             activeTab === "newbuilders"
               ? "bg-[#d0ed01] text-black"
               : "bg-[#232323] text-white hover:bg-[#333]"
           }`}
           onClick={() => setActiveTab("newbuilders")}
         >
-          <FiUsers />
+          <FiUsers className="text-base lg:text-lg" />
           New Builders
         </button>
         <button
-          className={`px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 ${
+          className={`px-4 lg:px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 text-sm lg:text-base ${
             activeTab === "corecommunity"
               ? "bg-[#d0ed01] text-black"
               : "bg-[#232323] text-white hover:bg-[#333]"
           }`}
           onClick={() => setActiveTab("corecommunity")}
         >
-          <FiAward />
+          <FiAward className="text-base lg:text-lg" />
           Core Community
         </button>
         <button
-          className={`px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 ${
+          className={`px-4 lg:px-6 py-2 rounded-full font-semibold transition flex items-center gap-2 text-sm lg:text-base ${
             activeTab === "organizations"
               ? "bg-[#d0ed01] text-black"
               : "bg-[#232323] text-white hover:bg-[#333]"
           }`}
           onClick={() => setActiveTab("organizations")}
         >
-          <FiBriefcase />
+          <FiBriefcase className="text-base lg:text-lg" />
           Organizations
         </button>
       </div>
 
       {/* Content */}
       {activeTab === "newbuilders" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
           {profiles.map((profile) => (
             <div
               key={profile.id}
-              className="bg-gradient-to-br from-[#18181b] to-[#232323] rounded-xl p-6 border border-[#d0ed01]/20 hover:border-[#d0ed01]/40 transition-all duration-300 shadow-lg hover:shadow-[#d0ed01]/10"
+              className="bg-gradient-to-br from-[#18181b] to-[#232323] rounded-xl p-4 lg:p-6 border border-[#d0ed01]/20 hover:border-[#d0ed01]/40 transition-all duration-300 shadow-lg hover:shadow-[#d0ed01]/10 min-h-[200px] lg:min-h-0"
             >
-              <div className="flex items-start gap-4 mb-4">
+              <div className="flex items-start gap-3 lg:gap-4 mb-4">
                 <img
                   src={profile.image}
                   alt={profile.name}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-[#d0ed01]/30"
+                  className="w-12 h-12 lg:w-16 lg:h-16 rounded-full object-cover border-2 border-[#d0ed01]/30 flex-shrink-0"
                 />
-                <div>
-                  <h3 className="text-lg font-semibold text-white">{profile.name}</h3>
-                  <p className="text-[#d0ed01]">{profile.role}</p>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <FiMapPin />
-                    {profile.location}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base lg:text-lg font-semibold text-white leading-tight mb-1">{profile.name}</h3>
+                  <p className="text-[#d0ed01] text-sm lg:text-base">{profile.role}</p>
+                  <div className="flex items-center gap-2 text-xs lg:text-sm text-gray-400 mt-1">
+                    <FiMapPin className="text-xs lg:text-sm" />
+                    <span className="truncate">{profile.location}</span>
                   </div>
                 </div>
               </div>
